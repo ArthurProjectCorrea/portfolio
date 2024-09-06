@@ -4,8 +4,13 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 
-const app = createApp(App)
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 
-app.use(router)
+library.add(faUserSecret)
 
-app.mount('#app')
+createApp(App)
+  .component('font-awesome-icon', FontAwesomeIcon)
+  .use(router)
+  .mount('#app')
