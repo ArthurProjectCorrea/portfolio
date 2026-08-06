@@ -1,0 +1,32 @@
+# dependencies
+node_modules
+
+# next.js build output
+.next
+out
+build
+
+# generated / auto-written files
+next-env.d.ts
+AGENTS.md
+*.tsbuildinfo
+
+# static assets (icons, images) — not source code
+public
+
+# lockfiles
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# misc
+coverage
+.vercel
+*.pem
+
+# IA
+.agents
+.claude
+
+# Components
+components/ui

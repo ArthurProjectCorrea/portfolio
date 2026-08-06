@@ -1,0 +1,16 @@
+{
+  "home": {
+    "heading": "Para começar, edite o arquivo {file}.",
+    "description": "Procurando um ponto de partida ou mais instruções? Acesse os {templates} ou o centro de {learning}.",
+    "templates": "Templates",
+    "learning": "Aprendizado",
+    "deployNow": "Fazer Deploy",
+    "documentation": "Documentação"
+  },
+  "theme": {
+    "light": "Claro",
+    "dark": "Escuro",
+    "system": "Sistema",
+    "toggle": "Alternar tema"
+  }
+}
