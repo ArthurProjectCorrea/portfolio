@@ -9,12 +9,18 @@
     "menu": "Abrir menu"
   },
   "home": {
-    "heading": "Para começar, edite o arquivo {file}.",
-    "description": "Procurando um ponto de partida ou mais instruções? Acesse os {templates} ou o centro de {learning}.",
-    "templates": "Templates",
-    "learning": "Aprendizado",
-    "deployNow": "Fazer Deploy",
-    "documentation": "Documentação"
+    "hero": {
+      "title": "Arthur Correa — Full Stack Developer",
+      "subtitle": "Construindo soluções web escaláveis | React • Node.js • TypeScript",
+      "ctaProjects": "Ver Projetos",
+      "ctaContact": "Entrar em Contato",
+      "photoAlt": "Foto de Arthur Correa",
+      "stats": {
+        "projects": "Projetos",
+        "years": "Anos de experiência",
+        "technologies": "Tecnologias"
+      }
+    }
   },
   "theme": {
     "light": "Claro",
