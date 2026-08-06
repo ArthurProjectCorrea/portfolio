@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { lang } from "next/root-params";
-import { locales } from "@/lib/i18n-config";
+import { notFound } from "next/navigation";
+import { hasLocale, locales } from "@/lib/i18n-config";
 import { Providers } from "@/components/global/providers";
-import { ModeToggle } from "@/components/shared/mode-toggle";
+import { SiteHeader } from "@/components/shared/site-header";
 import { getDictionary } from "./dictionaries";
 import "../globals.css";
 
@@ -27,19 +28,25 @@ export async function generateStaticParams() {
 }
 
 export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
+  const rawLocale = await lang();
+  if (!hasLocale(rawLocale)) notFound();
+  const locale = rawLocale;
   const dict = await getDictionary();
 
   return (
     <html
-      lang={await lang()}
+      lang={locale}
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <Providers>
-          <header className="flex items-center justify-end p-4">
-            <ModeToggle labels={dict.theme} />
-          </header>
+          <SiteHeader
+            lang={locale}
+            nav={dict.nav}
+            themeLabels={dict.theme}
+            langLabels={dict.language}
+          />
           {children}
         </Providers>
       </body>

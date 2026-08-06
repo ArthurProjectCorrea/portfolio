@@ -1,4 +1,13 @@
 {
+  "nav": {
+    "brand": "Arthur.Correa",
+    "home": "Início",
+    "projects": "Projetos",
+    "about": "Sobre",
+    "blog": "Blog",
+    "contact": "Contato",
+    "menu": "Abrir menu"
+  },
   "home": {
     "heading": "Para começar, edite o arquivo {file}.",
     "description": "Procurando um ponto de partida ou mais instruções? Acesse os {templates} ou o centro de {learning}.",
@@ -12,5 +21,12 @@
     "dark": "Escuro",
     "system": "Sistema",
     "toggle": "Alternar tema"
+  },
+  "language": {
+    "toggle": "Alterar idioma",
+    "locales": {
+      "en": "Inglês",
+      "pt-BR": "Português (Brasil)"
+    }
   }
 }
