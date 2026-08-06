@@ -9,6 +9,7 @@
 [![shadcn/ui](https://img.shields.io/badge/shadcn/ui-4.16.1-000000?style=flat&logo=shadcnui&logoColor=white)](https://ui.shadcn.com)
 [![ESLint](https://img.shields.io/badge/ESLint-9.39.5-4B32C3?style=flat&logo=eslint&logoColor=white)](https://eslint.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![wakatime](https://wakatime.com/badge/github/ArthurProjectCorrea/portfolio.svg)](https://wakatime.com/badge/github/ArthurProjectCorrea/portfolio)
 
 ## Getting Started
 
