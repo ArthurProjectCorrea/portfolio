@@ -20,6 +20,8 @@ This repository's `.github/workflows/wakatime-sync.yml` watches commit messages 
 - If a real issue number comes back, append `(#N)` to the subject line of **every** commit you create this run, consistent with this repo's existing commit style.
 - If the answer is "none", proceed without any `#N` reference in any commit this run — that's an intentional, complete answer, not something to re-ask about per bucket.
 
+If the user's request states or implies that this commit finishes every remaining task of that issue (e.g. "conclui a issue #N", "fecha a issue", "essa é a última tarefa"), add a `Closes #N` footer line to the body of the **last** commit created this run — this is what makes GitHub auto-close the issue on push to the default branch. Don't add it if the issue still has open tasks, and don't ask the user to confirm completion if they already stated it — take their word for it.
+
 ## Step 1 — see what's pending
 
 ```bash
