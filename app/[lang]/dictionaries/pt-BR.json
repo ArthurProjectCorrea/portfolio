@@ -34,5 +34,17 @@
       "en": "Inglês",
       "pt-BR": "Português (Brasil)"
     }
+  },
+  "footer": {
+    "linksHeading": "Links",
+    "socialHeading": "Redes sociais",
+    "copyright": "Arthur Correa. Todos os direitos reservados.",
+    "builtWith": "Feito com Next.js + Tailwind CSS",
+    "socialNames": {
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "email": "E-mail",
+      "whatsapp": "WhatsApp"
+    }
   }
 }

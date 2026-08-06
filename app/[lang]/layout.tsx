@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { hasLocale, locales } from "@/lib/i18n-config";
 import { Providers } from "@/components/global/providers";
 import { SiteHeader } from "@/components/shared/site-header";
+import { SiteFooter } from "@/components/shared/site-footer";
 import { getDictionary } from "./dictionaries";
 import "../globals.css";
 
@@ -47,7 +48,8 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
             themeLabels={dict.theme}
             langLabels={dict.language}
           />
-          {children}
+          <main className="flex-1">{children}</main>
+          <SiteFooter lang={locale} nav={dict.nav} footer={dict.footer} />
         </Providers>
       </body>
     </html>
