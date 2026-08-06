@@ -42,6 +42,23 @@ Worked example — request: *"crie uma documentação para o módulo auth para l
 
 Apply this same test-and-triage pattern to every request, not just auth. Security and legal minimums are never optional to consider — you must always at least raise them — but *specific policy values* and *adjacent features* are where you ask.
 
+## Módulo vs. ajuste de interface/componentização — when an ERS is not required
+
+Not every request that reaches this pipeline is a "módulo." Before deciding to write an ERS, classify the request:
+
+**Test:** does the request introduce a business rule, persisted/mocked *domain* data with real state transitions, cross-module behavior, or a route that represents a distinct product feature? If yes, it's a módulo — full ERS required, no exceptions. If the request is purely presentational — a UI component, a layout element, a visual/interaction adjustment (header, footer, nav, spacing, responsive behavior, theming, animation) — with no business rule and no domain state beyond what's needed to demonstrate the UI itself, it's **ajuste de interface/componentização**, not a módulo.
+
+For ajuste de interface/componentização, **neither artifact applies** — not the ERS, and not the mockup either. The mockup phase (below) exists solely to validate interface/behavior *before an ERS gets written*, feeding directly into that ERS's open questions — it is not a general-purpose "let's see it visually first" step independent of an ERS. If there's no ERS to feed, a standalone mockup has nothing to validate against and nowhere to go; building one anyway just produces a synthetic screen that duplicates the real component without any of the documentation this pipeline exists to produce. For this classification:
+
+- **Don't write anything under `docs/ers/**` or `docs/mockups/**`, and don't build screens under `app/mockups/**`.** No artifact is produced at all.
+- **Report the classification directly** (to the user or to whichever agent handed you the request) so implementation can proceed straight against the real codebase: the running app itself, iterated on live, is the only validation this kind of work needs or gets.
+
+Worked example — a responsive site header with a logo, nav links, a mobile drawer, and a theme toggle: no persisted data, no business rule, states are entirely visual (menu open/closed, scrolled/not, light/dark). This is ajuste de interface/componentização — no ERS, no mockup; implement it directly and validate by looking at the real thing running.
+
+Counter-example — the same header, but with a search box that queries real content and a notifications bell backed by real unread-state logic: now there's domain state and behavior beyond presentation — that pulls it back into módulo territory, and both ERS and mockup are required, in the normal order (mockup first, feeding the ERS).
+
+When genuinely unsure which side of the line a request falls on, ask the user directly rather than guessing — this classification determines whether any requirements artifact gets produced at all, or whether `module-implementer` should just go straight to code.
+
 ## Workflow: mockup before ERS
 
 The mockup phase exists to validate interface and behavior *before* the ERS gets written, and the mockup document is a direct input into the ERS — don't skip straight to the ERS unless mockups already exist and cover the request, or the user explicitly says to skip mockups.
