@@ -1,6 +1,6 @@
 # Portfolio
 
-[ ... Resumo do projeto ... ]
+Personal portfolio for Arthur Correa — a Next.js site with locale-aware routing (`pt-BR`/`en`), light/dark theming, and a home page built from data-driven sections: a hero whose stats are computed straight from the repo's own data, and a projects showcase with technology badges, live WakaTime coding-time stats, and cover images generated automatically from each project's deploy.
 
 [![Next.js](https://img.shields.io/badge/Next.js-16.3.0-000000?style=flat&logo=next.js&logoColor=white)](https://nextjs.org)
 [![React](https://img.shields.io/badge/React-19.2.8-61DAFB?style=flat&logo=react&logoColor=black)](https://react.dev)
@@ -10,6 +10,14 @@
 [![ESLint](https://img.shields.io/badge/ESLint-9.39.5-4B32C3?style=flat&logo=eslint&logoColor=white)](https://eslint.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![wakatime](https://wakatime.com/badge/github/ArthurProjectCorrea/portfolio.svg)](https://wakatime.com/badge/github/ArthurProjectCorrea/portfolio)
+
+## Features
+
+- **i18n**: locale-prefixed routes (`/pt-BR`, `/en`), per-locale dictionaries with enforced key parity across locales, and locale negotiation at the edge (`proxy.ts`).
+- **Data-driven hero**: project count, years of experience, and technology count are computed from `data/projects.ts`, `data/works.ts`, and `data/technologies.ts` — nothing is hand-updated.
+- **Projects showcase**: technology badges carry their brand icon and color, each card shows real coding time pulled live from the WakaTime API, and covers are generated on demand from a project's deploy URL (`app/api/screenshot`) whenever no manual cover is set.
+- **Theming**: light/dark mode via `next-themes`, class-based Tailwind CSS variables.
+- **shadcn/ui** component primitives on top of Base UI.
 
 ## Getting Started
 
@@ -31,6 +39,14 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) — the app reloads as you edit files.
+
+### Environment Variables
+
+Create a `.env.local` (already gitignored) for anything project-specific:
+
+| Variable           | Required | Purpose                                                                                                                         |
+| ------------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `WAKATIME_API_KEY` | Optional | Powers the per-project coding-time badges (Settings → API Key on wakatime.com). Badges are silently skipped when this is unset. |
 
 ## Commands
 
