@@ -11,6 +11,9 @@ export interface SocialLink {
 export const socialLinks: SocialLink[] = [
   { id: "github", href: "https://github.com/ArthurProjectCorrea" },
   { id: "email", href: "mailto:arthurdepaulacorrea@hotmail.com" },
-  { id: "whatsapp", href: "https://wa.me/5565981366997" },
-  { id: "linkedin", href: null },
+  { id: "whatsapp", href: "https://wa.me/5565993123149" },
+  {
+    id: "linkedin",
+    href: "https://www.linkedin.com/in/arthur-de-paula-correa-238a87240",
+  },
 ];
