@@ -6,27 +6,27 @@
     "about": "Sobre",
     "blog": "Blog",
     "contact": "Contato",
-    "menu": "Abrir menu"
+    "menu": "Abrir menu",
+    "menuTitle": "Menu"
   },
   "home": {
     "hero": {
-      "title": "Arthur Correa — Full Stack Developer",
-      "subtitle": "Construindo soluções web escaláveis | React • Node.js • TypeScript",
+      "eyebrow": "Full Stack Developer",
+      "title": "Arthur Correa",
+      "subtitle": "Construindo soluções web escaláveis",
       "ctaProjects": "Ver Projetos",
       "ctaContact": "Entrar em Contato",
       "photoAlt": "Foto de Arthur Correa",
       "stats": {
         "projects": "Projetos",
-        "years": "Anos de experiência",
+        "years": "Anos",
         "technologies": "Tecnologias"
       }
     }
   },
   "projects": {
-    "heading": "Projetos",
-    "subheading": "Seleção de trabalhos e experimentos.",
-    "metaTitle": "Projetos | Arthur.Correa",
-    "metaDescription": "Projetos desenvolvidos por Arthur Correa, com as tecnologias utilizadas, código-fonte e ambientes publicados.",
+    "eyebrow": "Projetos",
+    "heading": "Trabalhos recentes",
     "featured": "Destaque",
     "actions": {
       "repo": "GitHub",
@@ -34,6 +34,7 @@
       "details": "Ver Detalhes"
     },
     "imageFallbackAlt": "Prévia indisponível",
+    "wakatimeLabel": "Tempo de código",
     "empty": {
       "title": "Nenhum projeto publicado ainda",
       "description": "Assim que o primeiro projeto for adicionado, ele aparece aqui."
@@ -61,7 +62,8 @@
     "light": "Claro",
     "dark": "Escuro",
     "system": "Sistema",
-    "toggle": "Alternar tema"
+    "toggle": "Alternar tema",
+    "footerLabel": "Tema"
   },
   "language": {
     "toggle": "Alterar idioma",
@@ -71,7 +73,7 @@
     }
   },
   "footer": {
-    "linksHeading": "Links",
+    "linksHeading": "Links Úteis",
     "socialHeading": "Redes sociais",
     "copyright": "Arthur Correa. Todos os direitos reservados.",
     "builtWith": "Feito com Next.js + Tailwind CSS",

@@ -8,7 +8,12 @@ import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/lib/i18n-config";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetFooter,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -26,6 +31,7 @@ interface SiteHeaderNavLabels {
   blog: string;
   contact: string;
   menu: string;
+  menuTitle: string;
 }
 
 interface ModeToggleLabels {
@@ -33,6 +39,7 @@ interface ModeToggleLabels {
   dark: string;
   system: string;
   toggle: string;
+  footerLabel: string;
 }
 
 interface LangToggleLabels {
@@ -54,6 +61,8 @@ export function SiteHeader({
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+  const isHome = pathname === `/${lang}`;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -62,27 +71,59 @@ export function SiteHeader({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Scroll-spy for the home page's anchor sections (#home, #projects) — the
+  // nav item for whichever section is currently in view gets the active
+  // underline, instead of only reacting to the pathname.
+  useEffect(() => {
+    if (!isHome) return;
+
+    const sections = ["home", "projects"]
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const mostVisible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (mostVisible) setActiveSection(mostVisible.target.id);
+      },
+      { rootMargin: "-96px 0px -55% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [isHome]);
+
   const links = [
     { href: `/${lang}`, label: nav.home },
-    { href: `/${lang}/projects`, label: nav.projects },
+    { href: `/${lang}#projects`, label: nav.projects },
     { href: `/${lang}/about`, label: nav.about },
     { href: `/${lang}/blog`, label: nav.blog },
     { href: `/${lang}/contact`, label: nav.contact },
   ];
 
-  const isActive = (href: string) =>
-    href === `/${lang}` ? pathname === href : pathname.startsWith(href);
+  const isActive = (href: string) => {
+    const [path, hash] = href.split("#");
+    if (path === `/${lang}`) {
+      if (!isHome) return false;
+      const current = activeSection ?? "home";
+      return hash ? current === hash : current === "home";
+    }
+    return pathname.startsWith(path);
+  };
 
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 flex h-[60px] items-center justify-between border-b border-border bg-background/80 px-5 backdrop-blur-sm transition-shadow md:h-[72px] md:px-10",
+        "sticky top-0 z-40 flex h-[60px] items-center justify-between gap-3 border-b border-border bg-background/80 px-5 backdrop-blur-sm transition-shadow md:h-[72px] md:px-10",
         scrolled && "shadow-sm",
       )}
     >
       <Link
         href={`/${lang}`}
-        className="font-heading text-[32px] font-bold tracking-tight text-foreground transition-opacity hover:opacity-80 md:text-[40px]"
+        className="min-w-0 shrink truncate font-heading text-[22px] font-bold tracking-tight text-foreground transition-opacity hover:opacity-80 md:text-[40px]"
       >
         {nav.brand}
       </Link>
@@ -122,7 +163,7 @@ export function SiteHeader({
             <span className="sr-only">{nav.menu}</span>
           </Button>
           <SheetContent side="right" className="md:hidden">
-            <SheetTitle className="p-4 pb-0">{nav.brand}</SheetTitle>
+            <SheetTitle className="p-4 pb-0">{nav.menuTitle}</SheetTitle>
             <nav className="flex flex-col p-4">
               {links.map((link) => (
                 <Link
@@ -138,6 +179,12 @@ export function SiteHeader({
                 </Link>
               ))}
             </nav>
+            <SheetFooter className="flex-row items-center justify-between border-t border-border">
+              <span className="text-sm text-muted-foreground">
+                {themeLabels.footerLabel}
+              </span>
+              <ModeToggle labels={themeLabels} />
+            </SheetFooter>
           </SheetContent>
         </Sheet>
       </div>

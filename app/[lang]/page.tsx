@@ -2,6 +2,8 @@ import { lang } from "next/root-params";
 import { notFound } from "next/navigation";
 import { hasLocale } from "@/lib/i18n-config";
 import { HeroSection } from "@/components/private/home/hero-section";
+import { ProjectsSection } from "@/components/private/home/projects-section";
+import { getSortedProjects } from "@/lib/projects";
 import { getDictionary } from "./dictionaries";
 
 export default async function Home() {
@@ -9,5 +11,14 @@ export default async function Home() {
   if (!hasLocale(rawLocale)) notFound();
   const dict = await getDictionary();
 
-  return <HeroSection lang={rawLocale} hero={dict.home.hero} />;
+  return (
+    <>
+      <HeroSection lang={rawLocale} hero={dict.home.hero} />
+      <ProjectsSection
+        projects={getSortedProjects()}
+        lang={rawLocale}
+        labels={dict.projects}
+      />
+    </>
+  );
 }

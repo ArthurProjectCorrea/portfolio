@@ -3,6 +3,7 @@ import { Link2, Mail } from "lucide-react";
 import { SiGithub, SiWhatsapp } from "@icons-pack/react-simple-icons";
 
 import type { Locale } from "@/lib/i18n-config";
+import { Button } from "@/components/ui/button";
 import { socialLinks, type SocialId } from "@/data/socials";
 
 // Simple Icons dropped its LinkedIn glyph after a cease-and-desist, and
@@ -44,7 +45,7 @@ export function SiteFooter({
 }) {
   const links = [
     { href: `/${lang}`, label: nav.home },
-    { href: `/${lang}/projects`, label: nav.projects },
+    { href: `/${lang}#projects`, label: nav.projects },
     { href: `/${lang}/about`, label: nav.about },
     { href: `/${lang}/contact`, label: nav.contact },
   ];
@@ -52,13 +53,13 @@ export function SiteFooter({
   const socials = socialLinks.filter((social) => social.href !== null);
 
   return (
-    <footer className="border-t border-border bg-muted/30">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-8 md:flex-row md:justify-between md:px-8 md:py-12">
-        <div>
-          <h2 className="mb-3 text-sm font-medium text-foreground">
+    <footer className="border-t border-border bg-[color-mix(in_oklch,var(--background),black_6%)]">
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 md:flex-row md:justify-between md:gap-20 md:px-8 md:py-14">
+        <div className="flex flex-col gap-4">
+          <h2 className="text-[13px] font-bold tracking-[0.08em] text-muted-foreground uppercase">
             {footer.linksHeading}
           </h2>
-          <nav className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <nav className="grid grid-cols-2 gap-x-8 gap-y-2.5 md:grid-cols-4">
             {links.map((link) => (
               <Link
                 key={link.href}
@@ -71,24 +72,32 @@ export function SiteFooter({
           </nav>
         </div>
 
-        <div>
-          <h2 className="mb-3 text-sm font-medium text-foreground">
+        <div className="flex flex-col gap-4">
+          <h2 className="text-[13px] font-bold tracking-[0.08em] text-muted-foreground uppercase">
             {footer.socialHeading}
           </h2>
-          <div className="flex gap-4">
+          <div className="flex gap-2.5">
             {socials.map((social) => {
               const Icon = socialIcons[social.id];
               return (
-                <a
+                <Button
                   key={social.id}
-                  href={social.href ?? undefined}
-                  target={social.id === "email" ? undefined : "_blank"}
-                  rel={social.id === "email" ? undefined : "noreferrer"}
-                  aria-label={footer.socialNames[social.id]}
-                  className="text-muted-foreground transition-colors hover:text-foreground"
+                  variant="outline"
+                  size="icon"
+                  nativeButton={false}
+                  render={
+                    <a
+                      href={social.href ?? undefined}
+                      target={social.id === "email" ? undefined : "_blank"}
+                      rel={social.id === "email" ? undefined : "noreferrer"}
+                    />
+                  }
                 >
-                  <Icon className="size-5" />
-                </a>
+                  <Icon className="size-4" />
+                  <span className="sr-only">
+                    {footer.socialNames[social.id]}
+                  </span>
+                </Button>
               );
             })}
           </div>

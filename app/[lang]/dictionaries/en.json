@@ -6,27 +6,27 @@
     "about": "About",
     "blog": "Blog",
     "contact": "Contact",
-    "menu": "Open menu"
+    "menu": "Open menu",
+    "menuTitle": "Menu"
   },
   "home": {
     "hero": {
-      "title": "Arthur Correa — Full Stack Developer",
-      "subtitle": "Building scalable web products | React • Node.js • TypeScript",
+      "eyebrow": "Full Stack Developer",
+      "title": "Arthur Correa",
+      "subtitle": "Building scalable web products",
       "ctaProjects": "View Projects",
       "ctaContact": "Get in Touch",
       "photoAlt": "Photo of Arthur Correa",
       "stats": {
         "projects": "Projects",
-        "years": "Years of experience",
+        "years": "Years",
         "technologies": "Technologies"
       }
     }
   },
   "projects": {
-    "heading": "Projects",
-    "subheading": "A selection of work and experiments.",
-    "metaTitle": "Projects | Arthur.Correa",
-    "metaDescription": "Projects built by Arthur Correa, with the technologies used, source code and live environments.",
+    "eyebrow": "Projects",
+    "heading": "Recent work",
     "featured": "Featured",
     "actions": {
       "repo": "GitHub",
@@ -34,6 +34,7 @@
       "details": "View Details"
     },
     "imageFallbackAlt": "Preview unavailable",
+    "wakatimeLabel": "Coding time",
     "empty": {
       "title": "No projects published yet",
       "description": "As soon as the first project is added, it shows up here."
@@ -61,7 +62,8 @@
     "light": "Light",
     "dark": "Dark",
     "system": "System",
-    "toggle": "Toggle theme"
+    "toggle": "Toggle theme",
+    "footerLabel": "Theme"
   },
   "language": {
     "toggle": "Change language",
@@ -71,8 +73,8 @@
     }
   },
   "footer": {
-    "linksHeading": "Links",
-    "socialHeading": "Social",
+    "linksHeading": "Useful Links",
+    "socialHeading": "Social Links",
     "copyright": "Arthur Correa. All rights reserved.",
     "builtWith": "Built with Next.js + Tailwind CSS",
     "socialNames": {

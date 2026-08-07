@@ -1,14 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { TechnologyBadge } from "@/components/shared/technology-badge";
 import type { Locale } from "@/lib/i18n-config";
 import {
+  getFavoriteTechnologies,
   getProjectsCount,
   getTechnologiesCount,
   getYearsOfExperience,
 } from "@/lib/site-stats";
 
 interface HeroLabels {
+  eyebrow: string;
   title: string;
   subtitle: string;
   ctaProjects: string;
@@ -33,25 +37,44 @@ export function HeroSection({
     { value: `${getYearsOfExperience()}+`, label: hero.stats.years },
     { value: `${getTechnologiesCount()}+`, label: hero.stats.technologies },
   ];
+  const favoriteTechnologies = getFavoriteTechnologies();
 
   return (
-    <section className="relative flex min-h-screen items-center overflow-hidden bg-gradient-to-br from-background via-background to-primary/10">
-      <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-12 px-6 py-24 md:flex-row md:justify-between md:px-8">
-        <div className="flex max-w-2xl flex-col items-center gap-6 text-center animate-in fade-in slide-in-from-bottom-4 duration-700 md:items-start md:text-left">
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+    <section
+      id="home"
+      className="relative scroll-mt-[60px] overflow-hidden px-5 py-12 md:scroll-mt-[72px] md:px-10 md:py-24"
+    >
+      <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-10 md:flex-row md:gap-16">
+        <div className="flex flex-1 flex-col items-start gap-6 text-left animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <span className="text-[13px] font-semibold tracking-[0.12em] text-primary uppercase">
+            {hero.eyebrow}
+          </span>
+          <h1 className="font-heading text-[38px] leading-[1.05] font-bold tracking-tight md:text-[64px]">
             {hero.title}
           </h1>
-          <p className="text-lg text-muted-foreground sm:text-xl">
-            {hero.subtitle}
-          </p>
+          <div className="flex flex-col gap-3">
+            <p className="max-w-[480px] text-[15px] leading-relaxed text-muted-foreground md:text-[17px]">
+              {hero.subtitle}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {favoriteTechnologies.map((technology) => (
+                <TechnologyBadge
+                  key={technology.id}
+                  technology={technology}
+                  className="text-[11px] tracking-wide"
+                />
+              ))}
+            </div>
+          </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row">
+          <div className="flex flex-wrap gap-3.5">
             <Button
               size="lg"
               nativeButton={false}
               render={<Link href="#projects" />}
             >
               {hero.ctaProjects}
+              <ArrowRight className="transition-transform group-hover/button:animate-pulse" />
             </Button>
             <Button
               size="lg"
@@ -63,11 +86,11 @@ export function HeroSection({
             </Button>
           </div>
 
-          <dl className="mt-6 grid w-full max-w-md grid-cols-3 gap-6 border-t border-border pt-6">
+          <dl className="flex flex-col gap-4 md:flex-row md:gap-8">
             {stats.map((stat) => (
               <div
                 key={stat.label}
-                className="flex flex-col items-center gap-1 md:items-start"
+                className="flex items-baseline gap-2.5 md:flex-col md:items-start md:gap-1 md:border-l md:border-border md:pl-5"
               >
                 <dd className="text-2xl font-bold tabular-nums">
                   {stat.value}
@@ -78,14 +101,20 @@ export function HeroSection({
           </dl>
         </div>
 
-        <Image
-          src="/photo.svg"
-          alt={hero.photoAlt}
-          width={384}
-          height={683}
-          priority
-          className="hidden aspect-[768/1364] w-64 shrink-0 rounded-md object-cover md:block"
-        />
+        <div className="relative hidden aspect-[4/5] w-full max-w-sm shrink-0 md:block">
+          <div
+            className="absolute -top-5 -left-5 right-5 bottom-5 border-2 border-primary"
+            aria-hidden
+          />
+          <Image
+            src="/photo.svg"
+            alt={hero.photoAlt}
+            width={384}
+            height={683}
+            priority
+            className="relative h-full w-full rounded-md object-cover"
+          />
+        </div>
       </div>
     </section>
   );
