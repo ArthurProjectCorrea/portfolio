@@ -22,6 +22,41 @@
       }
     }
   },
+  "projects": {
+    "heading": "Projetos",
+    "subheading": "Seleção de trabalhos e experimentos.",
+    "metaTitle": "Projetos | Arthur.Correa",
+    "metaDescription": "Projetos desenvolvidos por Arthur Correa, com as tecnologias utilizadas, código-fonte e ambientes publicados.",
+    "featured": "Destaque",
+    "actions": {
+      "repo": "GitHub",
+      "live": "Deploy",
+      "details": "Ver Detalhes"
+    },
+    "imageFallbackAlt": "Prévia indisponível",
+    "empty": {
+      "title": "Nenhum projeto publicado ainda",
+      "description": "Assim que o primeiro projeto for adicionado, ele aparece aqui."
+    }
+  },
+  "projectDetail": {
+    "metaTitleTemplate": "{project} | Projetos | Arthur.Correa",
+    "breadcrumbHome": "Início",
+    "breadcrumbProjects": "Projetos",
+    "back": "Voltar para projetos",
+    "previous": "Projeto anterior",
+    "next": "Próximo projeto",
+    "about": "Sobre o projeto",
+    "highlights": "Destaques técnicos",
+    "factSheet": "Ficha do projeto",
+    "completedAt": "Concluído em",
+    "role": "Papel",
+    "technologies": "Tecnologias",
+    "notFound": {
+      "title": "Projeto não encontrado",
+      "description": "O endereço acessado não corresponde a nenhum projeto publicado."
+    }
+  },
   "theme": {
     "light": "Claro",
     "dark": "Escuro",

@@ -9,6 +9,22 @@ export interface Project {
   liveUrl?: string;
   /** ISO "yyyy-MM". */
   completedAt: string;
+  /**
+   * Absolute path of a 16:9 asset under /public. No project ships one today —
+   * every card and detail page falls back to the generated visual instead.
+   */
+  image?: string;
+  /** Moves the project to the front of the listing and adds a badge. */
+  featured?: boolean;
+  /**
+   * Long-form body for the detail page, one entry per paragraph. Optional:
+   * the detail page degrades to `description` when it is absent.
+   */
+  longDescription?: Record<Locale, string[]>;
+  /** Short list of technical highlights. Optional: the section is dropped when absent. */
+  highlights?: Record<Locale, string[]>;
+  /** Author's role in the project. Optional: the fact-sheet row is dropped when absent. */
+  role?: Record<Locale, string>;
 }
 
 // Add real projects here as they're finished — every metric derived from

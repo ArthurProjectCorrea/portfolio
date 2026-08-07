@@ -22,6 +22,41 @@
       }
     }
   },
+  "projects": {
+    "heading": "Projects",
+    "subheading": "A selection of work and experiments.",
+    "metaTitle": "Projects | Arthur.Correa",
+    "metaDescription": "Projects built by Arthur Correa, with the technologies used, source code and live environments.",
+    "featured": "Featured",
+    "actions": {
+      "repo": "GitHub",
+      "live": "Deploy",
+      "details": "View Details"
+    },
+    "imageFallbackAlt": "Preview unavailable",
+    "empty": {
+      "title": "No projects published yet",
+      "description": "As soon as the first project is added, it shows up here."
+    }
+  },
+  "projectDetail": {
+    "metaTitleTemplate": "{project} | Projects | Arthur.Correa",
+    "breadcrumbHome": "Home",
+    "breadcrumbProjects": "Projects",
+    "back": "Back to projects",
+    "previous": "Previous project",
+    "next": "Next project",
+    "about": "About the project",
+    "highlights": "Technical highlights",
+    "factSheet": "Project fact sheet",
+    "completedAt": "Completed in",
+    "role": "Role",
+    "technologies": "Technologies",
+    "notFound": {
+      "title": "Project not found",
+      "description": "The address you reached does not match any published project."
+    }
+  },
   "theme": {
     "light": "Light",
     "dark": "Dark",
