@@ -28,7 +28,6 @@ Internationalization is a first-class architectural concern, not an afterthought
 - Every route is nested under a locale segment (e.g. `app/[lang]/...`). There is no product route that renders without a resolved locale.
 - `proxy.ts` negotiates the locale for unprefixed requests (e.g. via the `Accept-Language` header) and redirects to the locale-prefixed path. It never renders content itself — it only decides which locale segment a request should land on.
 - The list of supported locales and the default locale are declared in exactly one place (a shared config module imported by both the proxy and the app layer). Nothing else hardcodes a locale list — every consumer imports from that single source of truth.
-- **The one exception**: `app/mockups/` is a separate route tree, deliberately kept outside the locale segment (see Directory Structure below). Its pages are internal requirements-validation artifacts, not a product surface, so they don't resolve a locale and their text isn't required to come from a dictionary.
 
 ### Locale access
 
@@ -48,7 +47,7 @@ Internationalization is a first-class architectural concern, not an afterthought
 - **English only, everywhere internal**: file names, folder names, functions, variables, types, classes, code comments, and any other text that lives inside the repository and isn't shown to an end user.
 - **Two narrow exceptions**:
   - The _values_ inside locale dictionary files — the translated strings themselves, written in their target locale's language.
-  - The _prose content_ of requirements-documentation files under `docs/` (per-module instances in `docs/ers/` and `docs/mockups/`, the living `docs/INFRA.md`, and transient escalation documents in `docs/gaps/`) — stakeholder-facing documentation written in a fixed non-English language by convention. File and folder names under `docs/` still follow the normal English/kebab-case rule; only the document body is exempt.
+  - The _prose content_ of requirements-documentation files under `docs/` (per-module instances in `docs/ers/`, the living `docs/INFRA.md`, and transient escalation documents in `docs/gaps/`) — stakeholder-facing documentation written in a fixed non-English language by convention. File and folder names under `docs/` still follow the normal English/kebab-case rule; only the document body is exempt.
 - **Not to be confused with that second exception**: `content/docs/` is a separate, similarly-named top-level directory — internal engineering documentation of implemented code, not a requirements artifact — and it follows the normal English-only rule throughout, including its prose.
 - **Casing**:
   - Files and folders: `kebab-case` (e.g. `user-profile.ts`), except framework-mandated file-convention names (`layout.tsx`, `page.tsx`, dynamic segment folders like `[lang]`).
@@ -63,7 +62,6 @@ A generic layout — actual subfolders under each of these will grow with the pr
 | Path                    | Purpose                                                                        |
 | ----------------------- | ------------------------------------------------------------------------------ |
 | `app/[locale-segment]/` | Routes, root layout, and per-locale dictionaries                               |
-| `app/mockups/`          | Standalone mockup screens, outside the locale segment (see i18n Routing above) |
 | `components/ui/`        | shadcn/ui primitives — CLI-generated and vendored, never hand-edited           |
 | `components/shared/`    | Custom components reused across more than one module/page                      |
 | `components/global/`    | App-wide context providers (theming and the like), not visible UI on their own |
@@ -75,7 +73,7 @@ A generic layout — actual subfolders under each of these will grow with the pr
 | `proxy.ts`              | Edge-level routing logic that runs before any route renders                    |
 | `public/`               | Static assets served as-is                                                     |
 
-Requirements documentation and mockups are produced by the `requirements-analyst` agent (see [`.claude/agents/requirements-analyst.md`](.claude/agents/requirements-analyst.md)), which fixes their internal shape: templates at `docs/ERS.md` and `docs/MOCKUP.md`, per-module instances at `docs/ers/<module-slug>.md` and `docs/mockups/<module-slug>.md`, a single living `docs/INFRA.md`, and mockup screens at `app/mockups/<module-slug>/<screen-slug>/page.tsx`.
+Requirements documentation is produced by the `requirements-analyst` agent (see [`.claude/agents/requirements-analyst.md`](.claude/agents/requirements-analyst.md)), which fixes its internal shape: a template at `docs/ERS.md`, per-module instances at `docs/ers/<module-slug>.md`, and a single living `docs/INFRA.md`. Interface/prototype input for a module is supplied by the user directly in conversation (e.g. an external design-tool prototype plus a functional explanation) rather than built or documented as a repository artifact.
 
 The `module-implementer` agent (see [`.claude/agents/module-implementer.md`](.claude/agents/module-implementer.md)) implements modules against those requirements artifacts. If it finds a module's requirements documentation systemically inadequate to implement against, it escalates by writing `docs/gaps/<module-slug>.md` — a transient escalation document (deleted once resolved) handed off to `requirements-analyst`. On completing a module, it writes technical documentation to `content/docs/<module-slug>/`, one file per facet that actually exists for that module (`index.md`, `api.md`, `types.md`, `functions.md`, `queues.md`). The `knowledge-base-keeper` agent (see [`.claude/agents/knowledge-base-keeper.md`](.claude/agents/knowledge-base-keeper.md)) keeps that knowledge base in sync with the codebase as it evolves.
 
