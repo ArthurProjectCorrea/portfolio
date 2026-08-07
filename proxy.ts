@@ -42,7 +42,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // `mockups` is a deliberate exception: it is a standalone route tree kept
-  // outside the locale segment, so it must never be redirected to one.
-  matcher: ["/((?!_next|api|mockups|.*\\..*).*)"],
+  matcher: ["/((?!_next|api|.*\\..*).*)"],
 };
