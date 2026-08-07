@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - "**"
+  workflow_dispatch:
+    inputs:
+      shas:
+        description: "Commit SHAs to backfill (comma or whitespace separated) — use when a push never triggered its own run"
+        required: true
+        type: string
 
 jobs:
   sync-hours:
@@ -12,17 +18,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
 
+      - name: Build commits JSON from manual input
+        id: manual-commits
+        if: github.event_name == 'workflow_dispatch'
+        run: node .github/scripts/build-commits-json.mjs "${{ inputs.shas }}"
+
       - name: Sync
         env:
           WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
           GH_PROJECT_TOKEN: ${{ secrets.GH_PROJECT_TOKEN }}
-          COMMITS_JSON: ${{ toJson(github.event.commits) }}
+          COMMITS_JSON: ${{ github.event_name == 'workflow_dispatch' && steps.manual-commits.outputs.commits_json || toJson(github.event.commits) }}
           BRANCH_NAME: ${{ github.ref_name }}
           WAKATIME_PROJECT_NAME: ${{ vars.WAKATIME_PROJECT_NAME }}
           TIME_FIELD_NAME: ${{ vars.TIME_FIELD_NAME }}
