@@ -76,24 +76,29 @@ export function SiteHeader({
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 flex h-[60px] items-center justify-between border-b border-transparent bg-background/80 px-4 backdrop-blur-sm transition-shadow md:px-8",
-        scrolled && "border-border shadow-sm",
+        "sticky top-0 z-40 flex h-[60px] items-center justify-between border-b border-border bg-background/80 px-5 backdrop-blur-sm transition-shadow md:h-[72px] md:px-10",
+        scrolled && "shadow-sm",
       )}
     >
       <Link
         href={`/${lang}`}
-        className="flex h-8 items-center border border-foreground bg-foreground px-2 text-xs font-bold tracking-tight text-background [font-family:var(--font-sans)] sm:text-sm"
+        className="font-heading text-[32px] font-bold tracking-tight text-foreground transition-opacity hover:opacity-80 md:text-[40px]"
       >
         {nav.brand}
       </Link>
 
       <NavigationMenu className="hidden md:flex">
-        <NavigationMenuList>
+        <NavigationMenuList className="gap-6">
           {links.map((link) => (
             <NavigationMenuItem key={link.href}>
               <NavigationMenuLink
                 active={isActive(link.href)}
                 render={<Link href={link.href} />}
+                className={cn(
+                  "rounded-none border-b-2 border-transparent bg-transparent px-1 py-2 text-sm font-medium text-muted-foreground normal-case transition-colors hover:bg-transparent hover:text-foreground focus:bg-transparent",
+                  isActive(link.href) &&
+                    "border-primary text-primary hover:text-primary data-active:bg-transparent",
+                )}
               >
                 {link.label}
               </NavigationMenuLink>
@@ -118,15 +123,15 @@ export function SiteHeader({
           </Button>
           <SheetContent side="right" className="md:hidden">
             <SheetTitle className="p-4 pb-0">{nav.brand}</SheetTitle>
-            <nav className="flex flex-col gap-1 p-4">
+            <nav className="flex flex-col p-4">
               {links.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
                   className={cn(
-                    "rounded-md px-2 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-                    isActive(link.href) && "bg-muted text-foreground",
+                    "border-b border-border py-3 text-base font-medium text-foreground transition-colors last:border-none hover:text-primary",
+                    isActive(link.href) && "text-primary",
                   )}
                 >
                   {link.label}

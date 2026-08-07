@@ -40,7 +40,7 @@ export function LangToggle({
         <Languages />
         <span className="sr-only">{labels.toggle}</span>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="w-40">
         <DropdownMenuRadioGroup value={lang} onValueChange={switchTo}>
           {locales.map((locale) => (
             <DropdownMenuRadioItem key={locale} value={locale}>
