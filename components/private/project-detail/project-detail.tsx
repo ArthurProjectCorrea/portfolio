@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 import { SiGithub } from "@icons-pack/react-simple-icons";
 
-import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,14 +14,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { ProjectVisual } from "@/components/shared/project-visual";
+import { TechnologyBadge } from "@/components/shared/technology-badge";
+import { WakatimeBadge } from "@/components/shared/wakatime-badge";
 import type { Project } from "@/data/projects";
 import type { Locale } from "@/lib/i18n-config";
-import type { ProjectNeighbors } from "@/lib/projects";
+import { getTechnologiesByIds } from "@/lib/technologies";
+import { getProjectCoverSrc, type ProjectNeighbors } from "@/lib/projects";
 
 export interface ProjectDetailLabels {
   /** Reused from the projects module, per RN-008 of the detail ERS. */
   featured: string;
   imageFallbackAlt: string;
+  wakatimeLabel: string;
   actions: {
     repo: string;
     live: string;
@@ -77,20 +80,20 @@ export function ProjectDetail({
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink render={<Link href={`/${lang}/projects`} />}>
+            <BreadcrumbLink render={<Link href={`/${lang}#projects`} />}>
               {labels.breadcrumbProjects}
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{project.title}</BreadcrumbPage>
+            <BreadcrumbPage>{project.name}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
 
       <ProjectVisual
-        image={project.image}
-        title={project.title}
+        image={getProjectCoverSrc(project)}
+        title={project.name}
         fallbackAlt={labels.imageFallbackAlt}
         featuredLabel={project.featured ? labels.featured : undefined}
         className="rounded-lg border border-border"
@@ -101,13 +104,13 @@ export function ProjectDetail({
 
       <header className="flex flex-col gap-4">
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          {project.title}
+          {project.name}
         </h1>
         <p className="max-w-[68ch] text-lg text-muted-foreground">
           {project.description[lang]}
         </p>
         <div className="flex flex-wrap gap-2">
-          {project.repoUrl ? (
+          {project.private ? null : project.repoUrl ? (
             <Button
               nativeButton={false}
               render={
@@ -128,13 +131,13 @@ export function ProjectDetail({
             </Button>
           )}
 
-          {project.liveUrl ? (
+          {project.url ? (
             <Button
               variant="outline"
               nativeButton={false}
               render={
                 <a
-                  href={project.liveUrl}
+                  href={project.url}
                   target="_blank"
                   rel="noopener noreferrer"
                 />
@@ -205,16 +208,32 @@ export function ProjectDetail({
                     <dd>{project.role[lang]}</dd>
                   </div>
                 ) : null}
+                {project.wakatimeProject ? (
+                  <div className="flex flex-col gap-1">
+                    <dt className="text-muted-foreground">
+                      {labels.wakatimeLabel}
+                    </dt>
+                    <dd>
+                      <WakatimeBadge
+                        project={project.wakatimeProject}
+                        label={labels.wakatimeLabel}
+                      />
+                    </dd>
+                  </div>
+                ) : null}
                 <div className="flex flex-col gap-2">
                   <dt className="text-muted-foreground">
                     {labels.technologies}
                   </dt>
                   <dd className="flex flex-wrap gap-1.5">
-                    {project.technologies.map((technology) => (
-                      <Badge key={technology} variant="outline">
-                        {technology}
-                      </Badge>
-                    ))}
+                    {getTechnologiesByIds(project.technologyIds).map(
+                      (technology) => (
+                        <TechnologyBadge
+                          key={technology.id}
+                          technology={technology}
+                        />
+                      ),
+                    )}
                   </dd>
                 </div>
               </dl>
@@ -233,7 +252,7 @@ export function ProjectDetail({
             render={<Link href={`/${lang}/projects/${previous.slug}`} />}
           >
             <ArrowLeft aria-hidden />
-            {previous.title}
+            {previous.name}
           </Button>
         ) : (
           <Button variant="ghost" disabled aria-disabled="true">
@@ -245,7 +264,7 @@ export function ProjectDetail({
         <Button
           variant="outline"
           nativeButton={false}
-          render={<Link href={`/${lang}/projects`} />}
+          render={<Link href={`/${lang}#projects`} />}
         >
           {labels.back}
         </Button>
@@ -256,7 +275,7 @@ export function ProjectDetail({
             nativeButton={false}
             render={<Link href={`/${lang}/projects/${next.slug}`} />}
           >
-            {next.title}
+            {next.name}
             <ArrowRight aria-hidden />
           </Button>
         ) : (

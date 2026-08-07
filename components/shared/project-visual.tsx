@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import { ImageOff } from "lucide-react";
 
@@ -6,9 +9,9 @@ import { cn } from "@/lib/utils";
 
 /**
  * 16:9 visual of a project, shared by the listing card and the detail page.
- * No project ships an image asset today, so the generated fallback (gradient +
- * icon) is what actually renders — the `image` branch stays ready for the day
- * real assets exist.
+ * Falls back to the generated placeholder whenever there's no `image`, or
+ * whenever it fails to load (e.g. the deploy screenshot isn't reachable) —
+ * a broken image is never left on screen.
  *
  * The pointer/keyboard highlight is driven by the closest ancestor marked
  * `group`; without one the overlay simply never shows.
@@ -33,6 +36,9 @@ export function ProjectVisual({
   badgeClassName?: string;
   sizes?: string;
 }) {
+  const [failed, setFailed] = useState(false);
+  const showImage = image && !failed;
+
   return (
     <div
       className={cn(
@@ -40,12 +46,13 @@ export function ProjectVisual({
         className,
       )}
     >
-      {image ? (
+      {showImage ? (
         <Image
           src={image}
           alt={title}
           fill
           sizes={sizes ?? "100vw"}
+          onError={() => setFailed(true)}
           className="object-cover transition-transform duration-300 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
         />
       ) : (

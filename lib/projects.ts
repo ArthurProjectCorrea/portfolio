@@ -38,6 +38,19 @@ export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((project) => project.slug === slug);
 }
 
+/**
+ * The image a card/detail page should render. A cover only ever shows for a
+ * deployed project — with no `url`, there's nothing live to depict, so the
+ * generated placeholder is used instead. Once a project has a `url`, an
+ * explicit `urlCover` wins; otherwise it falls back to a live screenshot of
+ * that URL (via /api/screenshot) so the cover never goes stale.
+ */
+export function getProjectCoverSrc(project: Project): string | undefined {
+  if (!project.url) return undefined;
+  if (project.urlCover) return project.urlCover;
+  return `/api/screenshot?url=${encodeURIComponent(project.url)}`;
+}
+
 export interface ProjectNeighbors {
   previous?: Project;
   next?: Project;

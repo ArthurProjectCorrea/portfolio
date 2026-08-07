@@ -28,7 +28,7 @@ export async function generateMetadata(
   const dict = await getDictionary();
   const title = dict.projectDetail.metaTitleTemplate.replace(
     "{project}",
-    project.title,
+    project.name,
   );
   const description = project.description[locale];
 
@@ -74,6 +74,7 @@ export default async function ProjectDetailPage(
       labels={{
         featured: dict.projects.featured,
         imageFallbackAlt: dict.projects.imageFallbackAlt,
+        wakatimeLabel: dict.projects.wakatimeLabel,
         actions: {
           repo: dict.projects.actions.repo,
           live: dict.projects.actions.live,

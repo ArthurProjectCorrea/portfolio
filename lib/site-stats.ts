@@ -1,6 +1,6 @@
-import { experience } from "@/data/experience";
 import { projects } from "@/data/projects";
-import { skills } from "@/data/skills";
+import { technologies, type Technology } from "@/data/technologies";
+import { works } from "@/data/works";
 
 function parseYearMonth(yearMonth: string): Date {
   const [year, month] = yearMonth.split("-").map(Number);
@@ -16,22 +16,19 @@ export function getProjectsCount(): number {
 }
 
 export function getTechnologiesCount(): number {
-  const names = new Set<string>();
-  for (const skill of skills) names.add(skill.name.toLowerCase());
-  for (const project of projects) {
-    for (const technology of project.technologies) {
-      names.add(technology.toLowerCase());
-    }
-  }
-  return names.size;
+  return technologies.length;
 }
 
 export function getYearsOfExperience(): number {
-  const earliestStart = experience.reduce<Date>((earliest, entry) => {
-    const start = parseYearMonth(entry.startDate);
-    return start < earliest ? start : earliest;
-  }, new Date());
-
   const msPerYear = 365.25 * 24 * 60 * 60 * 1000;
-  return Math.floor((Date.now() - earliestStart.getTime()) / msPerYear);
+  const totalMs = works.reduce((sum, work) => {
+    const start = parseYearMonth(work.startDate);
+    const end = work.endDate ? parseYearMonth(work.endDate) : new Date();
+    return sum + Math.max(0, end.getTime() - start.getTime());
+  }, 0);
+  return Math.floor(totalMs / msPerYear);
+}
+
+export function getFavoriteTechnologies(): Technology[] {
+  return technologies.filter((technology) => technology.favorite);
 }

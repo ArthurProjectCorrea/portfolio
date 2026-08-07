@@ -12,8 +12,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ProjectVisual } from "@/components/shared/project-visual";
+import { TechnologyBadge } from "@/components/shared/technology-badge";
+import { WakatimeBadge } from "@/components/shared/wakatime-badge";
 import type { Project } from "@/data/projects";
 import type { Locale } from "@/lib/i18n-config";
+import { getProjectCoverSrc } from "@/lib/projects";
+import { getTechnologiesByIds } from "@/lib/technologies";
 
 /** Badges beyond this count are summarised as a "+N" indicator. */
 const MAX_VISIBLE_TECHNOLOGIES = 4;
@@ -21,6 +25,7 @@ const MAX_VISIBLE_TECHNOLOGIES = 4;
 export interface ProjectCardLabels {
   featured: string;
   imageFallbackAlt: string;
+  wakatimeLabel: string;
   actions: {
     repo: string;
     live: string;
@@ -37,27 +42,33 @@ export function ProjectCard({
   lang: Locale;
   labels: ProjectCardLabels;
 }) {
-  const visibleTechnologies = project.technologies.slice(
-    0,
-    MAX_VISIBLE_TECHNOLOGIES,
-  );
-  const overflowCount =
-    project.technologies.length - visibleTechnologies.length;
+  const technologies = getTechnologiesByIds(project.technologyIds);
+  const visibleTechnologies = technologies.slice(0, MAX_VISIBLE_TECHNOLOGIES);
+  const overflowCount = technologies.length - visibleTechnologies.length;
 
   return (
     <Card className="group h-full gap-0 overflow-hidden p-0 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg focus-within:-translate-y-1 focus-within:shadow-lg motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:focus-within:translate-y-0">
-      <ProjectVisual
-        image={project.image}
-        title={project.title}
-        fallbackAlt={labels.imageFallbackAlt}
-        featuredLabel={project.featured ? labels.featured : undefined}
-        sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-      />
+      <div className="relative">
+        <ProjectVisual
+          image={getProjectCoverSrc(project)}
+          title={project.name}
+          fallbackAlt={labels.imageFallbackAlt}
+          featuredLabel={project.featured ? labels.featured : undefined}
+          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+        />
+        {project.wakatimeProject ? (
+          <WakatimeBadge
+            project={project.wakatimeProject}
+            label={labels.wakatimeLabel}
+            className="absolute top-2 right-2 z-10 border-border bg-background/85 backdrop-blur-sm"
+          />
+        ) : null}
+      </div>
 
       <CardContent className="flex flex-1 flex-col gap-3 p-5">
         <div className="flex flex-col gap-1">
           <CardTitle className="line-clamp-2 text-base leading-snug">
-            {project.title}
+            {project.name}
           </CardTitle>
           <CardDescription className="line-clamp-3 text-sm">
             {project.description[lang]}
@@ -66,9 +77,7 @@ export function ProjectCard({
 
         <div className="flex flex-wrap gap-1.5">
           {visibleTechnologies.map((technology) => (
-            <Badge key={technology} variant="outline">
-              {technology}
-            </Badge>
+            <TechnologyBadge key={technology.id} technology={technology} />
           ))}
           {overflowCount > 0 ? (
             <Badge variant="secondary">{`+${overflowCount}`}</Badge>
@@ -85,7 +94,7 @@ export function ProjectCard({
           {labels.actions.details}
         </Button>
 
-        {project.repoUrl ? (
+        {project.private ? null : project.repoUrl ? (
           <Button
             size="sm"
             variant="outline"
@@ -108,17 +117,13 @@ export function ProjectCard({
           </Button>
         )}
 
-        {project.liveUrl ? (
+        {project.url ? (
           <Button
             size="sm"
             variant="outline"
             nativeButton={false}
             render={
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              />
+              <a href={project.url} target="_blank" rel="noopener noreferrer" />
             }
           >
             <ExternalLink aria-hidden />
