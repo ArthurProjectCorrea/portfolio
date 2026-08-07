@@ -44,27 +44,26 @@ export const projects: Project[] = [
     slug: "portfolio",
     name: "Arthur.Correa Portfolio",
     description: {
-      en: "This site — a Next.js portfolio with full i18n routing, light/dark themes, live WakaTime coding-time metrics, and auto-generated project screenshots, built through a documentation-first, agent-driven workflow.",
+      en: "This site — a Next.js portfolio with full i18n routing, light/dark themes, and live WakaTime coding-time metrics, built through a documentation-first, agent-driven workflow.",
       "pt-BR":
-        "Este site — um portfólio em Next.js com roteamento i18n completo, temas claro/escuro, métricas de tempo de código via WakaTime e capturas de tela geradas automaticamente, construído com um fluxo orientado a documentação e agentes.",
+        "Este site — um portfólio em Next.js com roteamento i18n completo, temas claro/escuro e métricas de tempo de código via WakaTime, construído com um fluxo orientado a documentação e agentes.",
     },
     highlights: {
       en: [
         "Hero metrics (projects, technologies, years of experience) computed at build time from the repo's own data files.",
         "Technology badges carry their brand icon and color, and each project shows real coding time pulled live from the WakaTime API.",
-        "Project covers are generated automatically from the live deploy — no manual screenshots to keep up to date.",
         "Full i18n (en/pt-BR): locale-prefixed routing with enforced key parity across dictionaries.",
       ],
       "pt-BR": [
         "Métricas do Hero (projetos, tecnologias, anos de experiência) calculadas a partir dos próprios dados do repositório.",
         "Badges de tecnologia com ícone e cor de marca, e tempo de código real de cada projeto puxado ao vivo da API do WakaTime.",
-        "Capa dos projetos gerada automaticamente a partir do deploy — sem precisar tirar print manualmente.",
         "i18n completo (en/pt-BR): rotas prefixadas por locale e paridade de chaves garantida entre os dicionários.",
       ],
     },
     technologyIds: [7, 4, 8],
     repoUrl: "https://github.com/ArthurProjectCorrea/portfolio",
     url: "https://portfolio-tan-two-61.vercel.app/pt-BR",
+    urlCover: "/projects/portfolio.png",
     wakatimeProject: "portfolio",
     completedAt: "2026-08",
   },

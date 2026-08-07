@@ -10,8 +10,7 @@ import { cn } from "@/lib/utils";
 /**
  * 16:9 visual of a project, shared by the listing card and the detail page.
  * Falls back to the generated placeholder whenever there's no `image`, or
- * whenever it fails to load (e.g. the deploy screenshot isn't reachable) —
- * a broken image is never left on screen.
+ * whenever it fails to load — a broken image is never left on screen.
  *
  * The pointer/keyboard highlight is driven by the closest ancestor marked
  * `group`; without one the overlay simply never shows.
