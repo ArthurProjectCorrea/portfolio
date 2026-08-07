@@ -22,6 +22,30 @@
         "years": "Anos",
         "technologies": "Tecnologias"
       }
+    },
+    "about": {
+      "eyebrow": "Sobre",
+      "heading": "Um pouco sobre mim",
+      "bio": [
+        "Sou desenvolvedor full stack em Cuiabá (MT). Trabalho com React, Next.js e Vue no front-end e com Node.js, Nest.js, Adonis.js e Laravel no back-end, apoiado em PostgreSQL e MongoDB.",
+        "Comecei em 2022 no suporte técnico, atendendo usuários, diagnosticando falhas de software e rede e configurando sistemas. Foi esse caminho que me levou à programação: na HPAR fui promovido a Assistente de Programação, onde passei a manter e desenvolver sites e aplicativos, testar novos softwares e escrever documentação técnica.",
+        "Sou formado em Análise e Desenvolvimento de Sistemas pelo UNIVAG e curso pós-graduação em Desenvolvimento Web Full Stack. Os anos no atendimento me ensinaram a escrever código pensando em quem está do outro lado da tela."
+      ],
+      "photoAlt": "Retrato de Arthur Correa",
+      "cvLabel": "Baixar CV (PDF)",
+      "timelineHeading": "Experiência",
+      "promotedFrom": "Promovido de {role}",
+      "present": "Atual",
+      "educationHeading": "Formação",
+      "skillsHeading": "Principais tecnologias",
+      "skills": {
+        "categories": {
+          "frontend": "Front-end",
+          "backend": "Back-end",
+          "database": "Banco de dados",
+          "tools": "Ferramentas"
+        }
+      }
     }
   },
   "projects": {

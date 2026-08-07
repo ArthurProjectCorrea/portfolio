@@ -22,6 +22,30 @@
         "years": "Years",
         "technologies": "Technologies"
       }
+    },
+    "about": {
+      "eyebrow": "About",
+      "heading": "A bit about me",
+      "bio": [
+        "I'm a full stack developer based in Cuiabá, Brazil. I work with React, Next.js and Vue on the front end, Node.js, Nest.js, Adonis.js and Laravel on the back end, with PostgreSQL and MongoDB behind them.",
+        "I started out in technical support in 2022 — handling users, diagnosing software and network failures, setting up systems. That's what pulled me into development: at HPAR I was promoted to Programming Assistant, maintaining and building websites and apps, testing new software and writing technical documentation.",
+        "I hold a degree in Systems Analysis and Development from UNIVAG and I'm currently taking a graduate course in Full Stack Web Development. Years on the support side taught me to write code around the person on the other side of the screen."
+      ],
+      "photoAlt": "Portrait of Arthur Correa",
+      "cvLabel": "Download CV (PDF)",
+      "timelineHeading": "Experience",
+      "promotedFrom": "Promoted from {role}",
+      "present": "Present",
+      "educationHeading": "Education",
+      "skillsHeading": "Core technologies",
+      "skills": {
+        "categories": {
+          "frontend": "Frontend",
+          "backend": "Backend",
+          "database": "Databases",
+          "tools": "Tools"
+        }
+      }
     }
   },
   "projects": {

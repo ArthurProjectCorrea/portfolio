@@ -71,13 +71,13 @@ export function SiteHeader({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Scroll-spy for the home page's anchor sections (#home, #projects) — the
-  // nav item for whichever section is currently in view gets the active
-  // underline, instead of only reacting to the pathname.
+  // Scroll-spy for the home page's anchor sections (#home, #about,
+  // #projects) — the nav item for whichever section is currently in view
+  // gets the active underline, instead of only reacting to the pathname.
   useEffect(() => {
     if (!isHome) return;
 
-    const sections = ["home", "projects"]
+    const sections = ["home", "about", "projects"]
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
     if (sections.length === 0) return;
@@ -98,8 +98,8 @@ export function SiteHeader({
 
   const links = [
     { href: `/${lang}`, label: nav.home },
+    { href: `/${lang}#about`, label: nav.about },
     { href: `/${lang}#projects`, label: nav.projects },
-    { href: `/${lang}/about`, label: nav.about },
     { href: `/${lang}/blog`, label: nav.blog },
     { href: `/${lang}/contact`, label: nav.contact },
   ];
