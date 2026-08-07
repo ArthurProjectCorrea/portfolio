@@ -23,7 +23,7 @@ Open [http://localhost:3000](http://localhost:3000) — the app reloads as you e
 Read [`ARCHITECTURE.md`](ARCHITECTURE.md) first. It defines the rules your change is expected to follow:
 
 - **Naming**: everything internal (files, folders, functions, variables, comments) is English-only.
-- **User-facing text**: never a hardcoded string — always a key added to **every** locale's dictionary in the same change.
+- **User-facing text**: never a hardcoded string — always a key added to **every** locale's dictionary in the same change, except a narrow, type-enforced exception for per-entity data records (see `ARCHITECTURE.md`).
 - **Structure**: routes under the locale segment, shared config/utilities under `lib/`, edge-level routing logic in `proxy.ts`.
 
 If a change introduces a new structural pattern (new top-level convention, new tooling, a new routing or i18n mechanism), expect `ARCHITECTURE.md` to be updated alongside it — this is largely automated (see [Keeping Docs in Sync](#keeping-docs-in-sync) below), but flag it if you notice the document falling behind.

@@ -41,6 +41,7 @@ Internationalization is a first-class architectural concern, not an afterthought
 - Each supported locale has exactly one dictionary file, and all dictionary files share the same key structure. Adding a new user-facing string means adding the key to **every** locale's dictionary in the same change — a dictionary is never allowed to drift out of sync with the others.
 - Dictionaries are loaded lazily, scoped to the resolved locale — a request for one locale must not pull another locale's translations into the response.
 - If a locale can't be resolved to a known dictionary, the route responds with "not found" rather than silently falling back to a different locale's content.
+- **Narrow exception**: a structured, per-entity data record defined under `data/` may hold its own localized text as a field typed `Record<Locale, string>` (or `Record<Locale, string[]>`) instead of a dictionary key. This is only for fields that belong to one specific entity instance and have no other source of truth — such as a catalog entity's own description — where the type system itself already guarantees every locale is present for that entry, so the drift a dictionary enforces against can't occur. It does not extend to freestanding UI copy (headings, labels, button/nav/empty-state text, and the like): anything not tied to a specific data entity still belongs in the dictionaries, with no exception.
 
 ## Naming Conventions
 
@@ -68,6 +69,7 @@ A generic layout — actual subfolders under each of these will grow with the pr
 | `components/private/`   | Components scoped to a single module/page, one subfolder per module            |
 | `hooks/`                | Custom React hooks, alongside any CLI-generated ones                           |
 | `lib/`                  | Shared, framework-agnostic configuration and utilities (e.g. the locale list)  |
+| `data/`                 | Structured, per-entity data records — see the locale-field exception above     |
 | `docs/`                 | Requirements-documentation artifacts — see the naming exception above          |
 | `content/docs/`         | Technical knowledge-base documentation of implemented modules (English-only)   |
 | `proxy.ts`              | Edge-level routing logic that runs before any route renders                    |
