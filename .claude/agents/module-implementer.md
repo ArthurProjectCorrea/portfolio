@@ -66,6 +66,8 @@ Follow `ARCHITECTURE.md` exactly: English-only internal naming, Server Component
 
 Before considering the work done: run `npm run lint`, `npm run format -- --check`, and `npm run build`. If the change is observable in the browser (a route, a component, a visual/interactive change), start the dev server and actually exercise it — golden path and the edge cases the mockup/ERS called out — rather than only trusting the type-checker.
 
+**Módulo track only — remove the mockup screens once the real implementation is verified**: delete `app/mockups/<module-slug>/` in full (every screen and support file under it). Mockup screens are a pre-implementation validation artifact — once the real routes/components exist and are verified, leaving the mockup screens in place ships dead weight into the production build (they're still built and served as real routes under `/mockups/**`). This only removes the built screens; `docs/mockups/<module-slug>.md` itself is `requirements-analyst`'s territory and stays untouched — it remains the historical record of what was validated. If `app/mockups/` (or a shared `layout.tsx` inside it) still has other in-progress modules' screens, only remove this module's own subdirectory.
+
 ## Phase 3 — Generate technical documentation (only for complete, working implementations)
 
 Once — and only once — the implementation is complete, working, and verified, write technical documentation to `content/docs/<module-slug>/`. This is **not** the `docs/` requirements-artifact convention: it's internal engineering documentation, so it follows the repository's normal **English-only** rule, not the Portuguese exception used by ERS/mockup/infra documents. Don't confuse the two.
