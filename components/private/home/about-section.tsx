@@ -14,6 +14,17 @@ import { getSortedEducation } from "@/lib/education";
 import { getTechnologiesGroupedByCategory } from "@/lib/technologies";
 import { getWorkTimeline } from "@/lib/works";
 
+/** Display limit for the experience grid — RN-002: exhibition-only cut, the full set still feeds getYearsOfExperience(). */
+const FEATURED_WORK_COUNT = 4;
+
+/** Bento-style column span per grid position, on a 12-column desktop grid — mirrors the approved prototype. */
+const WORK_GRID_SPANS = [
+  "md:col-start-1 md:col-span-7",
+  "md:col-start-8 md:col-span-5",
+  "md:col-start-1 md:col-span-5",
+  "md:col-start-6 md:col-span-7",
+];
+
 interface AboutLabels {
   eyebrow: string;
   heading: string;
@@ -60,7 +71,7 @@ export function AboutSection({
   lang: Locale;
   about: AboutLabels;
 }) {
-  const timeline = getWorkTimeline();
+  const timeline = getWorkTimeline().slice(0, FEATURED_WORK_COUNT);
   const educationEntries = getSortedEducation();
   const groupedSkills = getTechnologiesGroupedByCategory();
 
@@ -114,85 +125,104 @@ export function AboutSection({
           </div>
         </div>
 
-        <div className="grid gap-10 lg:grid-cols-[1fr_320px]">
-          <div>
-            <h3 className="mb-5 flex items-center gap-2 text-sm font-semibold tracking-wide text-foreground uppercase">
-              <Briefcase className="size-4 text-primary" aria-hidden />
-              {about.timelineHeading}
-            </h3>
-            <ol className="grid gap-4 md:grid-cols-2">
-              {timeline.map((work) => (
-                <li key={work.id}>
-                  <Card
-                    className={cn(work.techRelated === false && "opacity-70")}
-                  >
-                    <CardContent className="flex flex-col gap-1.5 p-5">
-                      <span className="text-xs tabular-nums text-muted-foreground">
-                        {formatDateRange(
-                          work.startDate,
-                          work.endDate,
-                          lang,
-                          about.present,
+        <div>
+          <h3 className="mb-5 flex items-center gap-2 text-sm font-semibold tracking-wide text-foreground uppercase">
+            <Briefcase className="size-4 text-primary" aria-hidden />
+            {about.timelineHeading}
+          </h3>
+          <ol className="grid gap-4 md:grid-cols-12 md:gap-5">
+            {timeline.map((work, index) => (
+              <li key={work.id} className={cn(WORK_GRID_SPANS[index])}>
+                <Card
+                  className={cn(work.techRelated === false && "opacity-70")}
+                >
+                  <CardContent className="flex flex-col gap-1.5 p-5">
+                    <span className="text-xs tabular-nums text-muted-foreground">
+                      {formatDateRange(
+                        work.startDate,
+                        work.endDate,
+                        lang,
+                        about.present,
+                      )}
+                    </span>
+                    <span className="font-heading text-sm font-semibold">
+                      {work.role[lang]}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {work.name}
+                    </span>
+                    {work.promotedFrom ? (
+                      <span className="flex items-center gap-1 text-xs font-medium text-primary">
+                        <TrendingUp className="size-3" aria-hidden />
+                        {about.promotedFrom.replace(
+                          "{role}",
+                          work.promotedFrom[lang],
                         )}
                       </span>
-                      <span className="font-heading text-sm font-semibold">
-                        {work.role[lang]}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        {work.name}
-                      </span>
-                      {work.promotedFrom ? (
-                        <span className="flex items-center gap-1 text-xs font-medium text-primary">
-                          <TrendingUp className="size-3" aria-hidden />
-                          {about.promotedFrom.replace(
-                            "{role}",
-                            work.promotedFrom[lang],
+                    ) : null}
+                    <p className="text-xs leading-relaxed text-muted-foreground">
+                      {work.description[lang]}
+                    </p>
+                  </CardContent>
+                </Card>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div>
+          <h3 className="mb-5 flex items-center gap-2 text-sm font-semibold tracking-wide text-foreground uppercase">
+            <GraduationCap className="size-4 text-primary" aria-hidden />
+            {about.educationHeading}
+          </h3>
+          <ol className="relative flex flex-col gap-8">
+            <div
+              aria-hidden
+              className="absolute top-1.5 bottom-1.5 left-[5px] w-px bg-border md:left-1/2 md:-translate-x-1/2"
+            />
+            {educationEntries.map((entry, index) => {
+              const onRight = index % 2 === 1;
+              return (
+                <li
+                  key={entry.id}
+                  className="relative grid grid-cols-1 gap-3 pl-6 md:grid-cols-[1fr_auto_1fr] md:items-start md:gap-6 md:pl-0"
+                >
+                  <span
+                    aria-hidden
+                    className="absolute top-1.5 left-0 size-[11px] rounded-full border-2 border-background bg-primary md:left-1/2 md:-translate-x-1/2"
+                  />
+                  <div
+                    className={cn(
+                      "md:col-start-1",
+                      onRight && "md:col-start-3",
+                    )}
+                  >
+                    <Card>
+                      <CardContent className="flex flex-col gap-1.5 p-5">
+                        <span className="text-xs tabular-nums text-muted-foreground">
+                          {formatDateRange(
+                            entry.startDate,
+                            entry.endDate,
+                            lang,
+                            about.present,
                           )}
                         </span>
-                      ) : null}
-                      <p className="text-xs leading-relaxed text-muted-foreground">
-                        {work.description[lang]}
-                      </p>
-                    </CardContent>
-                  </Card>
+                        <span className="font-heading text-sm font-semibold">
+                          {entry.degree[lang]}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          {entry.institution}
+                        </span>
+                        <p className="text-xs leading-relaxed text-muted-foreground">
+                          {entry.description[lang]}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </div>
                 </li>
-              ))}
-            </ol>
-          </div>
-
-          <div>
-            <h3 className="mb-5 flex items-center gap-2 text-sm font-semibold tracking-wide text-foreground uppercase">
-              <GraduationCap className="size-4 text-primary" aria-hidden />
-              {about.educationHeading}
-            </h3>
-            <ul className="flex flex-col gap-4">
-              {educationEntries.map((entry) => (
-                <li key={entry.id}>
-                  <Card>
-                    <CardContent className="flex flex-col gap-1.5 p-5">
-                      <span className="text-xs tabular-nums text-muted-foreground">
-                        {formatDateRange(
-                          entry.startDate,
-                          entry.endDate,
-                          lang,
-                          about.present,
-                        )}
-                      </span>
-                      <span className="font-heading text-sm font-semibold">
-                        {entry.degree[lang]}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        {entry.institution}
-                      </span>
-                      <p className="text-xs leading-relaxed text-muted-foreground">
-                        {entry.description[lang]}
-                      </p>
-                    </CardContent>
-                  </Card>
-                </li>
-              ))}
-            </ul>
-          </div>
+              );
+            })}
+          </ol>
         </div>
 
         <div>

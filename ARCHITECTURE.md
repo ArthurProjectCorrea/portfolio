@@ -46,10 +46,7 @@ Internationalization is a first-class architectural concern, not an afterthought
 ## Naming Conventions
 
 - **English only, everywhere internal**: file names, folder names, functions, variables, types, classes, code comments, and any other text that lives inside the repository and isn't shown to an end user.
-- **Two narrow exceptions**:
-  - The _values_ inside locale dictionary files — the translated strings themselves, written in their target locale's language.
-  - The _prose content_ of requirements-documentation files under `docs/` (per-module instances in `docs/ers/`, the living `docs/INFRA.md`, and transient escalation documents in `docs/gaps/`) — stakeholder-facing documentation written in a fixed non-English language by convention. File and folder names under `docs/` still follow the normal English/kebab-case rule; only the document body is exempt.
-- **Not to be confused with that second exception**: `content/docs/` is a separate, similarly-named top-level directory — internal engineering documentation of implemented code, not a requirements artifact — and it follows the normal English-only rule throughout, including its prose.
+- **One narrow exception**: the _values_ inside locale dictionary files — the translated strings themselves, written in their target locale's language.
 - **Casing**:
   - Files and folders: `kebab-case` (e.g. `user-profile.ts`), except framework-mandated file-convention names (`layout.tsx`, `page.tsx`, dynamic segment folders like `[lang]`).
   - Variables and functions: `camelCase`.
@@ -70,14 +67,10 @@ A generic layout — actual subfolders under each of these will grow with the pr
 | `hooks/`                | Custom React hooks, alongside any CLI-generated ones                           |
 | `lib/`                  | Shared, framework-agnostic configuration and utilities (e.g. the locale list)  |
 | `data/`                 | Structured, per-entity data records — see the locale-field exception above     |
-| `docs/`                 | Requirements-documentation artifacts — see the naming exception above          |
-| `content/docs/`         | Technical knowledge-base documentation of implemented modules (English-only)   |
 | `proxy.ts`              | Edge-level routing logic that runs before any route renders                    |
 | `public/`               | Static assets served as-is                                                     |
 
-Requirements documentation is produced by the `requirements-analyst` agent (see [`.claude/agents/requirements-analyst.md`](.claude/agents/requirements-analyst.md)), which fixes its internal shape: a template at `docs/ERS.md`, per-module instances at `docs/ers/<module-slug>.md`, and a single living `docs/INFRA.md`. Interface/prototype input for a module is supplied by the user directly in conversation (e.g. an external design-tool prototype plus a functional explanation) rather than built or documented as a repository artifact.
-
-The `module-implementer` agent (see [`.claude/agents/module-implementer.md`](.claude/agents/module-implementer.md)) implements modules against those requirements artifacts. If it finds a module's requirements documentation systemically inadequate to implement against, it escalates by writing `docs/gaps/<module-slug>.md` — a transient escalation document (deleted once resolved) handed off to `requirements-analyst`. On completing a module, it writes technical documentation to `content/docs/<module-slug>/`, one file per facet that actually exists for that module (`index.md`, `api.md`, `types.md`, `functions.md`, `queues.md`). The `knowledge-base-keeper` agent (see [`.claude/agents/knowledge-base-keeper.md`](.claude/agents/knowledge-base-keeper.md)) keeps that knowledge base in sync with the codebase as it evolves.
+The `module-implementer` agent (see [`.claude/agents/module-implementer.md`](.claude/agents/module-implementer.md)) implements modules by investigating the existing code plus whatever prototype or functional explanation the user supplies directly in conversation, proposing a plan, and stopping for explicit approval before writing code.
 
 Business- and domain-specific folders (features, services, data models, and so on) are expected to grow inside this shape over time. This document tracks the shape itself, not what fills it.
 
