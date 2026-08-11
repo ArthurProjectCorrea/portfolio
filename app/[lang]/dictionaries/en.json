@@ -35,7 +35,9 @@
       "photoAlt": "Portrait of Arthur Correa",
       "cvLabel": "Download CV (PDF)",
       "timelineHeading": "Journey",
-      "present": "Present"
+      "present": "Present",
+      "timelineScrollPrevious": "Scroll to earlier events",
+      "timelineScrollNext": "Scroll to later events"
     },
     "skills": {
       "eyebrow": "Skills",

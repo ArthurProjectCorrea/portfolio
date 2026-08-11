@@ -7,15 +7,19 @@ import {
   useState,
   type CSSProperties,
   type KeyboardEvent,
+  type PointerEvent as ReactPointerEvent,
 } from "react";
 import {
   Award,
   Briefcase,
+  ChevronLeft,
+  ChevronRight,
   GraduationCap,
   LogOut,
   TrendingUp,
   type LucideIcon,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { TimelineEventKind } from "@/lib/timeline";
 
@@ -44,6 +48,8 @@ const SCROLL_STEP = COLUMN_WIDTH + COLUMN_GAP;
 
 interface LifeTimelineLabels {
   current: string;
+  scrollPrevious: string;
+  scrollNext: string;
 }
 
 export function LifeTimeline({
@@ -54,8 +60,14 @@ export function LifeTimeline({
   labels: LifeTimelineLabels;
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const dragOriginRef = useRef<{
+    pointerId: number;
+    startX: number;
+    startScrollLeft: number;
+  } | null>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   function updateEdges() {
     const el = scrollRef.current;
@@ -72,14 +84,51 @@ export function LifeTimeline({
     updateEdges();
   }, []);
 
+  function scrollByStep(direction: 1 | -1) {
+    scrollRef.current?.scrollBy({
+      left: direction * SCROLL_STEP,
+      behavior: "smooth",
+    });
+  }
+
   function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-    const el = scrollRef.current;
-    if (!el) return;
     if (event.key === "ArrowLeft") {
-      el.scrollBy({ left: -SCROLL_STEP, behavior: "smooth" });
+      scrollByStep(-1);
     } else if (event.key === "ArrowRight") {
-      el.scrollBy({ left: SCROLL_STEP, behavior: "smooth" });
+      scrollByStep(1);
     }
+  }
+
+  // Drag-to-scroll: the track hides its native scrollbar, so on desktop the
+  // only hint that there's more content is the edge fade — dragging with the
+  // mouse makes that content directly reachable instead of just implied.
+  // Touch/pen pointers are left alone since they already scroll natively.
+  function handlePointerDown(event: ReactPointerEvent<HTMLDivElement>) {
+    const el = scrollRef.current;
+    if (!el || event.pointerType !== "mouse") return;
+    dragOriginRef.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startScrollLeft: el.scrollLeft,
+    };
+    el.setPointerCapture(event.pointerId);
+    setIsDragging(true);
+  }
+
+  function handlePointerMove(event: ReactPointerEvent<HTMLDivElement>) {
+    const el = scrollRef.current;
+    const origin = dragOriginRef.current;
+    if (!el || !origin || origin.pointerId !== event.pointerId) return;
+    el.scrollLeft = origin.startScrollLeft - (event.clientX - origin.startX);
+  }
+
+  function endDrag(event: ReactPointerEvent<HTMLDivElement>) {
+    const el = scrollRef.current;
+    if (el && el.hasPointerCapture(event.pointerId)) {
+      el.releasePointerCapture(event.pointerId);
+    }
+    dragOriginRef.current = null;
+    setIsDragging(false);
   }
 
   return (
@@ -90,11 +139,18 @@ export function LifeTimeline({
         tabIndex={0}
         onScroll={updateEdges}
         onKeyDown={handleKeyDown}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
         style={{
           gridTemplateColumns: `repeat(${events.length}, ${COLUMN_WIDTH}px)`,
           columnGap: `${COLUMN_GAP}px`,
         }}
-        className="grid grid-rows-[1fr_auto_auto_1fr] overflow-x-auto px-10 py-10 [-ms-overflow-style:none] [scrollbar-width:none] focus-visible:outline-none [&::-webkit-scrollbar]:hidden"
+        className={cn(
+          "grid grid-rows-[1fr_auto_auto_1fr] overflow-x-auto px-10 py-10 [-ms-overflow-style:none] [scrollbar-width:none] focus-visible:outline-none [&::-webkit-scrollbar]:hidden",
+          isDragging ? "cursor-grabbing select-none" : "cursor-grab",
+        )}
       >
         <div
           aria-hidden
@@ -164,6 +220,30 @@ export function LifeTimeline({
           canScrollRight ? "opacity-100" : "opacity-0",
         )}
       />
+      {canScrollLeft ? (
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
+          aria-label={labels.scrollPrevious}
+          onClick={() => scrollByStep(-1)}
+          className="absolute top-1/2 left-1 -translate-y-1/2 rounded-full bg-background"
+        >
+          <ChevronLeft aria-hidden />
+        </Button>
+      ) : null}
+      {canScrollRight ? (
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
+          aria-label={labels.scrollNext}
+          onClick={() => scrollByStep(1)}
+          className="absolute top-1/2 right-1 -translate-y-1/2 rounded-full bg-background"
+        >
+          <ChevronRight aria-hidden />
+        </Button>
+      ) : null}
     </div>
   );
 }

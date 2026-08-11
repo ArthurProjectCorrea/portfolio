@@ -14,6 +14,8 @@ interface AboutLabels {
   cvLabel: string;
   timelineHeading: string;
   present: string;
+  timelineScrollPrevious: string;
+  timelineScrollNext: string;
 }
 
 /** Renders "yyyy-MM" as an abbreviated month/year in the route's language. */
@@ -98,7 +100,14 @@ export function AboutSection({
             <Milestone className="size-4 text-primary" aria-hidden />
             {about.timelineHeading}
           </h3>
-          <LifeTimeline events={events} labels={{ current: about.present }} />
+          <LifeTimeline
+            events={events}
+            labels={{
+              current: about.present,
+              scrollPrevious: about.timelineScrollPrevious,
+              scrollNext: about.timelineScrollNext,
+            }}
+          />
         </div>
       </div>
     </section>
