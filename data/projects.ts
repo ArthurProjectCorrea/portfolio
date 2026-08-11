@@ -3,6 +3,10 @@ import type { Locale } from "@/lib/i18n-config";
 export interface Project {
   slug: string;
   name: string;
+  /**
+   * One-line summary — used on cards and as the detail page's fallback body
+   * when no `content/{locale}/projects/{slug}.md` file exists yet for it.
+   */
   description: Record<Locale, string>;
   /** Technology ids from data/technologies.ts (the ProjectsTechnologies join). */
   technologyIds: number[];
@@ -13,9 +17,16 @@ export interface Project {
   url?: string;
   /**
    * Absolute path of a 16:9 asset under /public/projects. Optional: cards
-   * and the detail page fall back to the generated visual when absent.
+   * and the detail page fall back to the generated visual when absent. On
+   * the detail page this is always the first carousel slide.
    */
   urlCover?: string;
+  /**
+   * Additional absolute paths under /public/projects shown in the detail
+   * page's cover carousel, after `urlCover`. Optional: a single-image
+   * project just shows `urlCover` with no carousel controls.
+   */
+  galleryImages?: string[];
   /**
    * Exact project name as tracked by WakaTime (Settings → Projects). Optional:
    * the coding-time badge is skipped when absent or when the project isn't tracked.
@@ -25,11 +36,6 @@ export interface Project {
   completedAt: string;
   /** Moves the project to the front of the listing and adds a badge. */
   featured?: boolean;
-  /**
-   * Long-form body for the detail page, one entry per paragraph. Optional:
-   * the detail page degrades to `description` when it is absent.
-   */
-  longDescription?: Record<Locale, string[]>;
   /** Short list of technical highlights. Optional: the section is dropped when absent. */
   highlights?: Record<Locale, string[]>;
   /** Author's role in the project. Optional: the fact-sheet row is dropped when absent. */
@@ -60,10 +66,15 @@ export const projects: Project[] = [
         "i18n completo (en/pt-BR): rotas prefixadas por locale e paridade de chaves garantida entre os dicionários.",
       ],
     },
-    technologyIds: [7, 4, 8, 17, 18],
+    technologyIds: [7, 5, 4, 8, 17, 18, 19, 20, 21],
     repoUrl: "https://github.com/ArthurProjectCorrea/portfolio",
     url: "https://portfolio-tan-two-61.vercel.app/pt-BR",
-    urlCover: "/projects/portfolio.png",
+    urlCover: "/projects/portfolio/hero.png",
+    galleryImages: [
+      "/projects/portfolio/about.png",
+      "/projects/portfolio/skills.png",
+      "/projects/portfolio/projects.png",
+    ],
     wakatimeProject: "portfolio",
     completedAt: "2026-08",
   },

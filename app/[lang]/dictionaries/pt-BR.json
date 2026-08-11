@@ -59,6 +59,7 @@
   "projects": {
     "eyebrow": "Projetos",
     "heading": "Projetos recentes",
+    "viewAll": "Ver todos os projetos",
     "featured": "Destaque",
     "actions": {
       "repo": "GitHub",
@@ -72,19 +73,33 @@
       "description": "Assim que o primeiro projeto for adicionado, ele aparece aqui."
     }
   },
+  "projectsPage": {
+    "eyebrow": "Projetos",
+    "heading": "Todos os projetos",
+    "metaTitle": "Projetos | Arthur.Correa",
+    "metaDescription": "Todo projeto, construído e documentado do mesmo jeito — orientado a dados, internacionalizado e medido."
+  },
   "projectDetail": {
     "metaTitleTemplate": "{project} | Projetos | Arthur.Correa",
     "breadcrumbHome": "Início",
     "breadcrumbProjects": "Projetos",
     "back": "Voltar para projetos",
-    "previous": "Projeto anterior",
-    "next": "Próximo projeto",
-    "about": "Sobre o projeto",
     "highlights": "Destaques técnicos",
-    "factSheet": "Ficha do projeto",
+    "infoCard": "Visão geral",
     "completedAt": "Concluído em",
     "role": "Papel",
+    "version": "Versão",
+    "status": {
+      "heading": "Status do build",
+      "success": "Passando",
+      "failure": "Falhando",
+      "pending": "Em execução"
+    },
     "technologies": "Tecnologias",
+    "recentProjects": {
+      "heading": "Mais projetos",
+      "viewAll": "Ver todos os projetos"
+    },
     "notFound": {
       "title": "Projeto não encontrado",
       "description": "O endereço acessado não corresponde a nenhum projeto publicado."

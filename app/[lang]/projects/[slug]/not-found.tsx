@@ -37,7 +37,7 @@ export default async function ProjectNotFound() {
           <Button
             variant="outline"
             nativeButton={false}
-            render={<Link href={`/${locale}#projects`} />}
+            render={<Link href={`/${locale}/projects`} />}
           >
             <ArrowLeft aria-hidden />
             {dict.projectDetail.back}

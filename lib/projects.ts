@@ -1,8 +1,7 @@
 import { projects, type Project } from "@/data/projects";
 
-// Single source of truth for how projects are ordered and looked up. The
-// listing, the detail page and the neighbour navigation all read from here so
-// the product never presents two different orderings for the same set.
+// Single source of truth for how projects are ordered and looked up, so the
+// product never presents two different orderings for the same set.
 
 function assertUniqueSlugs(entries: Project[]): void {
   const seen = new Set<string>();
@@ -44,20 +43,4 @@ export function getProjectBySlug(slug: string): Project | undefined {
  */
 export function getProjectCoverSrc(project: Project): string | undefined {
   return project.urlCover;
-}
-
-export interface ProjectNeighbors {
-  previous?: Project;
-  next?: Project;
-}
-
-/** Neighbours in listing order — undefined at either end of the sequence. */
-export function getProjectNeighbors(slug: string): ProjectNeighbors {
-  const sorted = getSortedProjects();
-  const index = sorted.findIndex((project) => project.slug === slug);
-  if (index === -1) return {};
-  return {
-    previous: index > 0 ? sorted[index - 1] : undefined,
-    next: index < sorted.length - 1 ? sorted[index + 1] : undefined,
-  };
 }

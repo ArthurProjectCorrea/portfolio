@@ -4,11 +4,7 @@ import { notFound } from "next/navigation";
 
 import { ProjectDetail } from "@/components/private/project-detail/project-detail";
 import { hasLocale, locales } from "@/lib/i18n-config";
-import {
-  getProjectBySlug,
-  getProjectNeighbors,
-  getProjectSlugs,
-} from "@/lib/projects";
+import { getProjectBySlug, getProjectSlugs } from "@/lib/projects";
 import { defaultOgImage } from "@/lib/site-config";
 import { getDictionary } from "../../dictionaries";
 
@@ -69,7 +65,6 @@ export default async function ProjectDetailPage(
   return (
     <ProjectDetail
       project={project}
-      neighbors={getProjectNeighbors(project.slug)}
       lang={rawLocale}
       labels={{
         featured: dict.projects.featured,
@@ -78,18 +73,19 @@ export default async function ProjectDetailPage(
         actions: {
           repo: dict.projects.actions.repo,
           live: dict.projects.actions.live,
+          details: dict.projects.actions.details,
         },
+        empty: dict.projects.empty,
         breadcrumbHome: dict.projectDetail.breadcrumbHome,
         breadcrumbProjects: dict.projectDetail.breadcrumbProjects,
-        back: dict.projectDetail.back,
-        previous: dict.projectDetail.previous,
-        next: dict.projectDetail.next,
-        about: dict.projectDetail.about,
         highlights: dict.projectDetail.highlights,
-        factSheet: dict.projectDetail.factSheet,
+        infoCard: dict.projectDetail.infoCard,
         completedAt: dict.projectDetail.completedAt,
         role: dict.projectDetail.role,
+        version: dict.projectDetail.version,
+        status: dict.projectDetail.status,
         technologies: dict.projectDetail.technologies,
+        recentProjects: dict.projectDetail.recentProjects,
       }}
     />
   );

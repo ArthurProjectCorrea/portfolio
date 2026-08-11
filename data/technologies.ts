@@ -159,4 +159,22 @@ export const technologies: Technology[] = [
     category: "tools",
     color: "#007ACC",
   },
+  {
+    id: 19,
+    name: "Vercel",
+    category: "devops",
+    iconName: "SiVercel",
+  },
+  {
+    id: 20,
+    name: "GitHub",
+    category: "tools",
+    iconName: "SiGithub",
+  },
+  {
+    id: 21,
+    name: "shadcn/ui",
+    category: "frontend",
+    iconName: "SiShadcnui",
+  },
 ];

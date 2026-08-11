@@ -21,8 +21,6 @@ export function ProjectVisual({
   fallbackAlt,
   featuredLabel,
   className,
-  iconClassName,
-  badgeClassName,
   sizes,
 }: {
   image?: string;
@@ -31,8 +29,6 @@ export function ProjectVisual({
   /** Label of the featured badge. Omit it to render no badge at all. */
   featuredLabel?: string;
   className?: string;
-  iconClassName?: string;
-  badgeClassName?: string;
   sizes?: string;
 }) {
   const [failed, setFailed] = useState(false);
@@ -60,7 +56,7 @@ export function ProjectVisual({
           aria-label={fallbackAlt}
           className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-primary/15 via-muted to-background text-muted-foreground"
         >
-          <ImageOff className={cn("size-6", iconClassName)} aria-hidden />
+          <ImageOff className="size-6" aria-hidden />
           <span className="text-xs">{fallbackAlt}</span>
         </div>
       )}
@@ -68,9 +64,7 @@ export function ProjectVisual({
       <div className="pointer-events-none absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100 motion-reduce:transition-none" />
 
       {featuredLabel ? (
-        <Badge className={cn("absolute top-2 left-2 z-10", badgeClassName)}>
-          {featuredLabel}
-        </Badge>
+        <Badge className="absolute top-2 left-2 z-10">{featuredLabel}</Badge>
       ) : null}
     </div>
   );

@@ -21,7 +21,12 @@ export default async function Home() {
       <ProjectsSection
         projects={getSortedProjects()}
         lang={rawLocale}
+        eyebrow={dict.projects.eyebrow}
+        heading={dict.projects.heading}
         labels={dict.projects}
+        limit={4}
+        viewAllHref={`/${rawLocale}/projects`}
+        viewAllLabel={dict.projects.viewAll}
       />
     </>
   );
