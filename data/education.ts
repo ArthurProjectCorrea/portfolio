@@ -16,12 +16,12 @@ export const education: Education[] = [
   {
     id: 1,
     degree: {
-      en: "Full Stack Web Development (postgraduate, in progress)",
-      "pt-BR": "Desenvolvimento Web Full Stack (pós-graduação, em andamento)",
+      en: "Postgraduate Certificate in Full Stack Web Development",
+      "pt-BR": "Pós-graduação Lato Sensu em Desenvolvimento Web Full Stack",
     },
-    institution: "Polo Anhanguera Cuiabá",
-    startDate: "2025-08",
-    endDate: null,
+    institution: "Universidade Pitágoras Unopar Anhanguera",
+    startDate: "2025-07",
+    endDate: "2026-05",
     description: {
       en: "Online graduate program (360h) in web system patterns, architectures and technologies, covering big data, cloud computing and DevOps culture.",
       "pt-BR":

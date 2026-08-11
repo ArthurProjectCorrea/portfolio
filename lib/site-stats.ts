@@ -22,8 +22,11 @@ export function getTechnologiesCount(): number {
 export function getYearsOfExperience(): number {
   const msPerYear = 365.25 * 24 * 60 * 60 * 1000;
   const totalMs = works.reduce((sum, work) => {
-    const start = parseYearMonth(work.startDate);
-    const end = work.endDate ? parseYearMonth(work.endDate) : new Date();
+    const lastPosition = work.positions[work.positions.length - 1];
+    const start = parseYearMonth(work.positions[0].startDate);
+    const end = lastPosition.endDate
+      ? parseYearMonth(lastPosition.endDate)
+      : new Date();
     return sum + Math.max(0, end.getTime() - start.getTime());
   }, 0);
   return Math.floor(totalMs / msPerYear);
