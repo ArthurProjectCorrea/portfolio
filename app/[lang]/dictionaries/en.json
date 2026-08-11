@@ -4,6 +4,7 @@
     "home": "Home",
     "projects": "Projects",
     "about": "About",
+    "skills": "Skills",
     "blog": "Blog",
     "contact": "Contact",
     "menu": "Open menu",
@@ -34,15 +35,22 @@
       "photoAlt": "Portrait of Arthur Correa",
       "cvLabel": "Download CV (PDF)",
       "timelineHeading": "Journey",
-      "present": "Present",
-      "skillsHeading": "Core technologies",
-      "skills": {
-        "categories": {
-          "frontend": "Frontend",
-          "backend": "Backend",
-          "database": "Databases",
-          "tools": "Tools"
-        }
+      "present": "Present"
+    },
+    "skills": {
+      "eyebrow": "Skills",
+      "heading": "Proven by real use",
+      "categories": {
+        "frontend": "Frontend",
+        "backend": "Backend",
+        "database": "Databases",
+        "devops": "DevOps",
+        "tools": "Tools",
+        "ai": "AI"
+      },
+      "empty": {
+        "title": "No proven skills yet",
+        "description": "As soon as a project or work experience references a technology, it shows up here."
       }
     }
   },

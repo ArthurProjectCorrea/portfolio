@@ -28,6 +28,7 @@ interface SiteHeaderNavLabels {
   home: string;
   projects: string;
   about: string;
+  skills: string;
   blog: string;
   contact: string;
   menu: string;
@@ -77,7 +78,7 @@ export function SiteHeader({
   useEffect(() => {
     if (!isHome) return;
 
-    const sections = ["home", "about", "projects"]
+    const sections = ["home", "about", "skills", "projects"]
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
     if (sections.length === 0) return;
@@ -99,6 +100,7 @@ export function SiteHeader({
   const links = [
     { href: `/${lang}`, label: nav.home },
     { href: `/${lang}#about`, label: nav.about },
+    { href: `/${lang}#skills`, label: nav.skills },
     { href: `/${lang}#projects`, label: nav.projects },
     { href: `/${lang}/blog`, label: nav.blog },
     { href: `/${lang}/contact`, label: nav.contact },

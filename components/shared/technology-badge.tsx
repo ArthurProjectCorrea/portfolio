@@ -20,7 +20,7 @@ export function TechnologyBadge({
           : undefined
       }
     >
-      {renderTechnologyIcon(technology.id, technology.color)}
+      {renderTechnologyIcon(technology)}
       {technology.name}
     </Badge>
   );

@@ -1,59 +1,20 @@
-import type { ReactNode } from "react";
-import {
-  SiAdonisjs,
-  SiCss,
-  SiGit,
-  SiHtml5,
-  SiJavascript,
-  SiLaravel,
-  SiMongodb,
-  SiNestjs,
-  SiNextdotjs,
-  SiNodedotjs,
-  SiPostgresql,
-  SiReact,
-  SiTailwindcss,
-  SiTurborepo,
-  SiTypescript,
-  SiVuedotjs,
-} from "@icons-pack/react-simple-icons";
+import type { ComponentType, ReactNode } from "react";
+import * as SimpleIcons from "@icons-pack/react-simple-icons";
+import type { Technology } from "@/data/technologies";
 
-/** Keyed by Technology.id from data/technologies.ts. */
-export function renderTechnologyIcon(id: number, color?: string): ReactNode {
-  switch (id) {
-    case 1:
-      return <SiHtml5 color={color} />;
-    case 2:
-      return <SiCss color={color} />;
-    case 3:
-      return <SiJavascript color={color} />;
-    case 4:
-      return <SiTypescript color={color} />;
-    case 5:
-      return <SiReact color={color} />;
-    case 6:
-      return <SiVuedotjs color={color} />;
-    case 7:
-      return <SiNextdotjs color={color} />;
-    case 8:
-      return <SiTailwindcss color={color} />;
-    case 9:
-      return <SiNodedotjs color={color} />;
-    case 10:
-      return <SiLaravel color={color} />;
-    case 11:
-      return <SiAdonisjs color={color} />;
-    case 12:
-      return <SiNestjs color={color} />;
-    case 13:
-      return <SiPostgresql color={color} />;
-    case 14:
-      return <SiMongodb color={color} />;
-    case 15:
-      return <SiGit color={color} />;
-    case 16:
-      return <SiTurborepo color={color} />;
-    default:
-      return null;
-  }
+/**
+ * Resolves Technology.iconName against the installed icon package by name,
+ * so a new technology only ever needs a data/technologies.ts entry — never a
+ * code change here. Safe to do server-side (no "use client" in this file or
+ * its callers): the icon renders to static SVG markup, so this costs nothing
+ * in the client bundle.
+ */
+export function renderTechnologyIcon(technology: Technology): ReactNode {
+  if (!technology.iconName) return null;
+  const icons = SimpleIcons as unknown as Record<
+    string,
+    ComponentType<{ color?: string }>
+  >;
+  const Icon = icons[technology.iconName];
+  return Icon ? <Icon color={technology.color} /> : null;
 }

@@ -4,6 +4,7 @@
     "home": "Início",
     "projects": "Projetos",
     "about": "Sobre",
+    "skills": "Habilidades",
     "blog": "Blog",
     "contact": "Contato",
     "menu": "Abrir menu",
@@ -34,15 +35,22 @@
       "photoAlt": "Retrato de Arthur Correa",
       "cvLabel": "Baixar CV (PDF)",
       "timelineHeading": "Trajetória",
-      "present": "Atual",
-      "skillsHeading": "Principais tecnologias",
-      "skills": {
-        "categories": {
-          "frontend": "Front-end",
-          "backend": "Back-end",
-          "database": "Banco de dados",
-          "tools": "Ferramentas"
-        }
+      "present": "Atual"
+    },
+    "skills": {
+      "eyebrow": "Habilidades",
+      "heading": "Comprovadas por uso real",
+      "categories": {
+        "frontend": "Front-end",
+        "backend": "Back-end",
+        "database": "Banco de dados",
+        "devops": "DevOps",
+        "tools": "Ferramentas",
+        "ai": "IA"
+      },
+      "empty": {
+        "title": "Nenhuma habilidade comprovada ainda",
+        "description": "Assim que um projeto ou experiência de trabalho referenciar uma tecnologia, ela aparece aqui."
       }
     }
   },

@@ -2,13 +2,7 @@ import Image from "next/image";
 import { Download, Milestone } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { TechnologyBadge } from "@/components/shared/technology-badge";
-import {
-  technologyCategories,
-  type TechnologyCategory,
-} from "@/data/technologies";
 import type { Locale } from "@/lib/i18n-config";
-import { getTechnologiesGroupedByCategory } from "@/lib/technologies";
 import { getLifeTimeline } from "@/lib/timeline";
 import { LifeTimeline, type DisplayTimelineEvent } from "./life-timeline";
 
@@ -20,10 +14,6 @@ interface AboutLabels {
   cvLabel: string;
   timelineHeading: string;
   present: string;
-  skillsHeading: string;
-  skills: {
-    categories: Record<TechnologyCategory, string>;
-  };
 }
 
 /** Renders "yyyy-MM" as an abbreviated month/year in the route's language. */
@@ -53,8 +43,6 @@ export function AboutSection({
     current: event.current,
     deemphasized: event.deemphasized,
   }));
-  const groupedSkills = getTechnologiesGroupedByCategory();
-
   return (
     <section
       id="about"
@@ -111,29 +99,6 @@ export function AboutSection({
             {about.timelineHeading}
           </h3>
           <LifeTimeline events={events} labels={{ current: about.present }} />
-        </div>
-
-        <div>
-          <h3 className="mb-5 text-sm font-semibold tracking-wide text-foreground uppercase">
-            {about.skillsHeading}
-          </h3>
-          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-            {technologyCategories.map((category) => (
-              <div key={category} className="flex flex-col gap-2.5">
-                <span className="text-xs font-medium text-muted-foreground">
-                  {about.skills.categories[category]}
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {groupedSkills[category].map((technology) => (
-                    <TechnologyBadge
-                      key={technology.id}
-                      technology={technology}
-                    />
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>

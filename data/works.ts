@@ -10,6 +10,13 @@ export interface Position {
   startDate: string;
   /** ISO "yyyy-MM", or null when the position is current. */
   endDate: string | null;
+  /**
+   * Technology ids from data/technologies.ts actually used in this role (the
+   * PositionsTechnologies join). Optional and left unset until confirmed —
+   * omit rather than guess; an empty/missing list simply doesn't contribute
+   * to that technology's usage-derived skill level.
+   */
+  technologyIds?: number[];
 }
 
 export interface Work {

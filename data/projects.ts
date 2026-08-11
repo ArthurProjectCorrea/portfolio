@@ -60,7 +60,7 @@ export const projects: Project[] = [
         "i18n completo (en/pt-BR): rotas prefixadas por locale e paridade de chaves garantida entre os dicionários.",
       ],
     },
-    technologyIds: [7, 4, 8],
+    technologyIds: [7, 4, 8, 17, 18],
     repoUrl: "https://github.com/ArthurProjectCorrea/portfolio",
     url: "https://portfolio-tan-two-61.vercel.app/pt-BR",
     urlCover: "/projects/portfolio.png",
