@@ -1,3 +1,5 @@
+## [1.6.0](https://github.com/ArthurProjectCorrea/portfolio/compare/v1.5.0...v1.6.0) (2026-08-11)
+
 ## [1.5.0](https://github.com/ArthurProjectCorrea/portfolio/compare/v1.4.0...v1.5.0) (2026-08-11)
 
 ## [1.4.0](https://github.com/ArthurProjectCorrea/portfolio/compare/v1.3.0...v1.4.0) (2026-08-11)
