@@ -78,7 +78,7 @@ export function SiteHeader({
   useEffect(() => {
     if (!isHome) return;
 
-    const sections = ["home", "about", "skills", "projects"]
+    const sections = ["home", "about", "skills", "projects", "contact"]
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
     if (sections.length === 0) return;
@@ -94,7 +94,23 @@ export function SiteHeader({
     );
 
     sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+
+    // The rootMargin above shrinks the observed viewport from the bottom, so
+    // the last section can never scroll up into that shrunk window once the
+    // page is scrolled all the way down — force it active at page bottom.
+    const lastSectionId = sections[sections.length - 1].id;
+    function onScroll() {
+      const atBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 2;
+      if (atBottom) setActiveSection(lastSectionId);
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+    };
   }, [isHome]);
 
   const links = [
@@ -103,7 +119,7 @@ export function SiteHeader({
     { href: `/${lang}#skills`, label: nav.skills },
     { href: `/${lang}#projects`, label: nav.projects },
     { href: `/${lang}/blog`, label: nav.blog },
-    { href: `/${lang}/contact`, label: nav.contact },
+    { href: `/${lang}#contact`, label: nav.contact },
   ];
 
   const isActive = (href: string) => {

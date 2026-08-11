@@ -1,23 +1,9 @@
 import Link from "next/link";
-import { Link2, Mail } from "lucide-react";
-import { SiGithub, SiWhatsapp } from "@icons-pack/react-simple-icons";
 
 import type { Locale } from "@/lib/i18n-config";
 import { Button } from "@/components/ui/button";
 import { socialLinks, type SocialId } from "@/data/socials";
-
-// Simple Icons dropped its LinkedIn glyph after a cease-and-desist, and
-// lucide never carried a brand icon either — Link2 is a neutral stand-in
-// until an alternative brand-icon source is picked.
-const socialIcons: Record<
-  SocialId,
-  React.ComponentType<{ className?: string }>
-> = {
-  github: SiGithub,
-  linkedin: Link2,
-  email: Mail,
-  whatsapp: SiWhatsapp,
-};
+import { socialIcons } from "@/components/shared/social-icon";
 
 interface SiteFooterNavLabels {
   home: string;
@@ -47,7 +33,7 @@ export function SiteFooter({
     { href: `/${lang}`, label: nav.home },
     { href: `/${lang}#projects`, label: nav.projects },
     { href: `/${lang}/about`, label: nav.about },
-    { href: `/${lang}/contact`, label: nav.contact },
+    { href: `/${lang}#contact`, label: nav.contact },
   ];
 
   const socials = socialLinks.filter((social) => social.href !== null);

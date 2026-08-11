@@ -54,6 +54,43 @@
         "title": "Nenhuma habilidade comprovada ainda",
         "description": "Assim que um projeto ou experiência de trabalho referenciar uma tecnologia, ela aparece aqui."
       }
+    },
+    "contact": {
+      "eyebrow": "Contato",
+      "heading": "Vamos construir algo juntos",
+      "form": {
+        "nameLabel": "Nome",
+        "namePlaceholder": "Seu nome",
+        "emailLabel": "Email",
+        "emailPlaceholder": "voce@exemplo.com",
+        "subjectLabel": "Assunto",
+        "subjectPlaceholder": "Sobre o que é?",
+        "messageLabel": "Mensagem",
+        "messagePlaceholder": "Conte um pouco sobre o projeto ou oportunidade...",
+        "submit": "Enviar Mensagem",
+        "submitting": "Enviando...",
+        "errors": {
+          "name": "Informe seu nome.",
+          "email": "Informe um email válido.",
+          "message": "A mensagem deve ter pelo menos 10 caracteres."
+        },
+        "successTitle": "Mensagem enviada",
+        "successDescription": "Obrigado pelo contato — respondo assim que possível.",
+        "errorTitle": "Algo deu errado",
+        "errorDescription": "Não foi possível enviar a mensagem. Tente novamente ou me contate diretamente."
+      },
+      "quickLinks": {
+        "heading": "Ou fale comigo direto",
+        "whatsapp": "WhatsApp",
+        "email": "Email",
+        "github": "GitHub",
+        "linkedin": "LinkedIn",
+        "whatsappMessage": "Olá Arthur! Vi seu portfólio e gostaria de conversar."
+      },
+      "info": {
+        "responseTime": "Costumo responder em até 24 horas.",
+        "openTo": "Aberto a propostas freelancer, oportunidades de emprego e colaborações."
+      }
     }
   },
   "projects": {

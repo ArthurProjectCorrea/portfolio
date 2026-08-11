@@ -5,6 +5,7 @@ import { AboutSection } from "@/components/private/home/about-section";
 import { HeroSection } from "@/components/private/home/hero-section";
 import { SkillsSection } from "@/components/private/home/skills-section";
 import { ProjectsSection } from "@/components/private/home/projects-section";
+import { ContactSection } from "@/components/private/home/contact-section";
 import { getSortedProjects } from "@/lib/projects";
 import { getDictionary } from "./dictionaries";
 
@@ -28,6 +29,7 @@ export default async function Home() {
         viewAllHref={`/${rawLocale}/projects`}
         viewAllLabel={dict.projects.viewAll}
       />
+      <ContactSection contact={dict.home.contact} />
     </>
   );
 }

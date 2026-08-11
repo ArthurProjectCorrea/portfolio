@@ -44,10 +44,11 @@ Open [http://localhost:3000](http://localhost:3000) — the app reloads as you e
 
 Create a `.env.local` (already gitignored) for anything project-specific:
 
-| Variable           | Required | Purpose                                                                                                                                                                    |
-| ------------------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `WAKATIME_API_KEY` | Optional | Powers the per-project coding-time badges (Settings → API Key on wakatime.com). Badges are silently skipped when this is unset.                                            |
-| `GITHUB_TOKEN`     | Optional | Powers the project detail page's release version, CI status, and language-breakdown chart (a fine-grained PAT with repo read access). Silently skipped when this is unset. |
+| Variable           | Required | Purpose                                                                                                                                         |
+| ------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `WAKATIME_API_KEY` | Optional | Powers the per-project coding-time badges (Settings → API Key on wakatime.com). Badges are silently skipped when this is unset.                 |
+| `GITHUB_TOKEN`     | Optional | Powers the project detail page's release version and CI status (a fine-grained PAT with repo read access). Silently skipped when this is unset. |
+| `RESEND_API_KEY`   | Optional | Powers the contact form's email delivery (resend.com → API Keys). The form fails gracefully with an error toast when this is unset.             |
 
 ## Commands
 

@@ -54,6 +54,43 @@
         "title": "No proven skills yet",
         "description": "As soon as a project or work experience references a technology, it shows up here."
       }
+    },
+    "contact": {
+      "eyebrow": "Contact",
+      "heading": "Let's build something",
+      "form": {
+        "nameLabel": "Name",
+        "namePlaceholder": "Your name",
+        "emailLabel": "Email",
+        "emailPlaceholder": "you@example.com",
+        "subjectLabel": "Subject",
+        "subjectPlaceholder": "What's this about?",
+        "messageLabel": "Message",
+        "messagePlaceholder": "Tell me about the project or opportunity...",
+        "submit": "Send Message",
+        "submitting": "Sending...",
+        "errors": {
+          "name": "Please enter your name.",
+          "email": "Please enter a valid email address.",
+          "message": "Message must be at least 10 characters long."
+        },
+        "successTitle": "Message sent",
+        "successDescription": "Thanks for reaching out — I'll reply as soon as I can.",
+        "errorTitle": "Something went wrong",
+        "errorDescription": "The message couldn't be sent. Please try again or reach out directly."
+      },
+      "quickLinks": {
+        "heading": "Or reach me directly",
+        "whatsapp": "WhatsApp",
+        "email": "Email",
+        "github": "GitHub",
+        "linkedin": "LinkedIn",
+        "whatsappMessage": "Hi Arthur! I found your portfolio and I'd like to talk."
+      },
+      "info": {
+        "responseTime": "I usually reply within 24 hours.",
+        "openTo": "Open to freelance work, job opportunities, and collaborations."
+      }
     }
   },
   "projects": {
