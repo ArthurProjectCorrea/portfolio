@@ -51,6 +51,8 @@ Common types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build
 
 **Keep commits scoped to one concern.** A single change that touches product code, tooling/config, and documentation should generally become separate commits — one for the module(s) affected, one for infrastructure/tooling, one for documentation — rather than one commit mixing all three. If you're not committing by hand, the repository's `workflow` agent applies this splitting automatically when asked to commit.
 
+**Reference the tracked issue in every commit of a run, not just the most-related one.** When a set of commits is being made to progress or finish a specific GitHub issue, put `(#N)` in the _subject line_ of **every** commit created in that run — including incidental ones (e.g. an unrelated cleanup found and committed along the way) — because `wakatime-sync.yml` (see below) logs coding time per commit, and a commit with no `#N` anywhere in its message simply logs no time against any issue. Reserve a `Closes: #N` line in the _body_ for the one commit that actually completes the issue; that's what triggers GitHub's auto-close on push, and it shouldn't be duplicated across commits that don't themselves close anything.
+
 Never commit secrets (`.env`, credentials, private keys, tokens).
 
 Commit types and scopes aren't just cosmetic history: they directly drive the automated release described below, so get them right.
