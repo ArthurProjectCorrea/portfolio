@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
+import { socialLinks } from "@/data/socials";
+import { isValidEmail } from "@/lib/validation";
+
 interface ContactPayload {
   name: string;
   email: string;
@@ -8,13 +11,18 @@ interface ContactPayload {
   message: string;
 }
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const CONTACT_RECIPIENT = "arthurdepaulacorrea@hotmail.com";
+const emailSocial = socialLinks.find((social) => social.id === "email");
+if (!emailSocial?.href) {
+  throw new Error(
+    "Contact recipient email is not configured in data/socials.ts",
+  );
+}
+const CONTACT_RECIPIENT = emailSocial.href.replace("mailto:", "");
 const CONTACT_SENDER = "Portfolio Contact <onboarding@resend.dev>";
 
 function validate(payload: Partial<ContactPayload>): string | null {
   if (!payload.name?.trim()) return "name";
-  if (!payload.email?.trim() || !EMAIL_PATTERN.test(payload.email.trim())) {
+  if (!payload.email?.trim() || !isValidEmail(payload.email.trim())) {
     return "email";
   }
   if (!payload.message?.trim() || payload.message.trim().length < 10) {

@@ -18,6 +18,8 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) — the app reloads as you edit files.
 
+A few features (coding-time badges, the project detail page's release/CI status, contact-form email delivery) read optional credentials from environment variables — copy `.env.example` to `.env.local` and fill in whichever you have. Each one is skipped silently, not an error, when its variable is unset.
+
 ## Before You Open a Change
 
 Read [`ARCHITECTURE.md`](ARCHITECTURE.md) first. It defines the rules your change is expected to follow:
@@ -49,7 +51,7 @@ Commits follow [Conventional Commits](https://www.conventionalcommits.org/):
 
 Common types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`. Write the description in the imperative, present tense ("add" not "added"), under 72 characters.
 
-**Keep commits scoped to one concern.** A single change that touches product code, tooling/config, and documentation should generally become separate commits — one for the module(s) affected, one for infrastructure/tooling, one for documentation — rather than one commit mixing all three. If you're not committing by hand, the repository's `workflow` agent applies this splitting automatically when asked to commit.
+**Commit everything pending as a single commit.** Even when a change touches product code, tooling/config, and documentation together, that's one commit, not several — a long history of small split commits costs more than a commit spanning multiple areas. Pick the Conventional Commit `type` that carries the most weight across the whole change (`feat` > `fix` > `refactor` > everything else). If you're not committing by hand, the repository's `workflow` agent does exactly this when asked to commit.
 
 **Reference the tracked issue in every commit of a run, not just the most-related one.** When a set of commits is being made to progress or finish a specific GitHub issue, put `(#N)` in the _subject line_ of **every** commit created in that run — including incidental ones (e.g. an unrelated cleanup found and committed along the way) — because `wakatime-sync.yml` (see below) logs coding time per commit, and a commit with no `#N` anywhere in its message simply logs no time against any issue. Reserve a `Closes: #N` line in the _body_ for the one commit that actually completes the issue; that's what triggers GitHub's auto-close on push, and it shouldn't be duplicated across commits that don't themselves close anything.
 
@@ -77,4 +79,4 @@ Never bump the version in `package.json` or hand-edit `CHANGELOG.md` — both ar
 
 ## Keeping Docs in Sync
 
-[`ARCHITECTURE.md`](ARCHITECTURE.md) and this file are maintained by the repository's `architecture-doc-keeper` agent as the codebase evolves — they should always describe what the code actually does, not an aspiration. If you notice either document is stale or inaccurate, that's worth flagging or fixing in the same spirit: keep it factual, and keep it free of project-specific business details (`ARCHITECTURE.md` in particular is intentionally agnostic to product/business context).
+[`ARCHITECTURE.md`](ARCHITECTURE.md) and this file are maintained by the repository's `architecture` agent as the codebase evolves — they should always describe what the code actually does, not an aspiration. If you notice either document is stale or inaccurate, that's worth flagging or fixing in the same spirit: keep it factual, and keep it free of project-specific business details (`ARCHITECTURE.md` in particular is intentionally agnostic to product/business context).

@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import type { Locale } from "@/lib/i18n-config";
+import { getSectionHref } from "@/lib/nav-links";
 import { Button } from "@/components/ui/button";
 import { socialLinks, type SocialId } from "@/data/socials";
 import { socialIcons } from "@/components/shared/social-icon";
@@ -30,10 +31,10 @@ export function SiteFooter({
   footer: SiteFooterLabels;
 }) {
   const links = [
-    { href: `/${lang}`, label: nav.home },
-    { href: `/${lang}#projects`, label: nav.projects },
-    { href: `/${lang}/about`, label: nav.about },
-    { href: `/${lang}#contact`, label: nav.contact },
+    { href: getSectionHref(lang, "home"), label: nav.home },
+    { href: getSectionHref(lang, "projects"), label: nav.projects },
+    { href: getSectionHref(lang, "about"), label: nav.about },
+    { href: getSectionHref(lang, "contact"), label: nav.contact },
   ];
 
   const socials = socialLinks.filter((social) => social.href !== null);

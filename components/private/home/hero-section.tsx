@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TechnologyBadge } from "@/components/shared/technology-badge";
 import type { Locale } from "@/lib/i18n-config";
+import { getSectionHref } from "@/lib/nav-links";
 import {
   getFavoriteTechnologies,
   getProjectsCount,
@@ -71,7 +72,7 @@ export function HeroSection({
             <Button
               size="lg"
               nativeButton={false}
-              render={<Link href="#projects" />}
+              render={<Link href={getSectionHref(lang, "projects")} />}
             >
               {hero.ctaProjects}
               <ArrowRight className="transition-transform group-hover/button:animate-pulse" />
@@ -80,7 +81,7 @@ export function HeroSection({
               size="lg"
               variant="outline"
               nativeButton={false}
-              render={<Link href={`/${lang}/contact`} />}
+              render={<Link href={getSectionHref(lang, "contact")} />}
             >
               {hero.ctaContact}
             </Button>

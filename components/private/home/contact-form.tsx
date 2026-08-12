@@ -13,6 +13,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { toast } from "@/components/ui/toast";
+import { isValidEmail } from "@/lib/validation";
 
 export interface ContactFormLabels {
   nameLabel: string;
@@ -44,7 +45,6 @@ interface FormState {
 }
 
 const EMPTY_FORM: FormState = { name: "", email: "", subject: "", message: "" };
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type FormErrors = Partial<Record<keyof Omit<FormState, "subject">, string>>;
 
@@ -56,7 +56,7 @@ export function ContactForm({ labels }: { labels: ContactFormLabels }) {
   function validate(): FormErrors {
     const next: FormErrors = {};
     if (!form.name.trim()) next.name = labels.errors.name;
-    if (!form.email.trim() || !EMAIL_PATTERN.test(form.email.trim())) {
+    if (!form.email.trim() || !isValidEmail(form.email.trim())) {
       next.email = labels.errors.email;
     }
     if (form.message.trim().length < 10) next.message = labels.errors.message;

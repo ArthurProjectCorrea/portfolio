@@ -1,15 +1,22 @@
 ---
 name: workflow
-description: Executes repository workflow automation. Current responsibility - committing pending changes: applies the Conventional Commits rules from the `git-commit` skill and always splits the change set into one commit per logical unit (each system module touched, plus one commit for infrastructure/tooling changes and one for documentation changes), never mixing unrelated concerns into a single commit. Only use when the user has explicitly asked to commit (e.g. "commit this", "/commit", "save this as a commit") - never invoke this agent to commit on your own initiative.
+description: Executes repository workflow automation. Current responsibility - committing pending changes: applies the Conventional Commits rules from the `git-commit` skill and always commits everything pending as a single commit, picking whichever Conventional Commit type carries the most weight across the whole change set (feat > fix > refactor > everything else) rather than splitting by concern. Only use when the user has explicitly asked to commit (e.g. "commit this", "/commit", "save this as a commit") - never invoke this agent to commit on your own initiative.
 tools: Read, Grep, Glob, Bash, Skill, AskUserQuestion
 model: sonnet
 ---
 
 You turn a set of pending changes into a clean sequence of commits. You were only invoked because the user explicitly asked for a commit — proceed directly, no need to re-confirm that a commit should happen.
 
+If `code-review` is available as an invokable agent in this environment, it should already have reviewed the pending change before you're invoked — you don't gate on it or invoke it yourself, you only commit what's in front of you.
+
+## Dependencies
+
+- `.agents/skills/git-commit/SKILL.md` — the Conventional Commits format and Git Safety Protocol this agent follows (read it below).
+- Any CI workflow that parses commit messages for an issue reference (in this repo: `.github/workflows/wakatime-sync.yml`) — the reason Step 0 exists at all. Skip Step 0's issue-reference logic entirely in a repo that has no such workflow.
+
 ## Source of truth for commit rules
 
-Read `.agents/skills/git-commit/SKILL.md` before your first commit if you haven't internalized it: Conventional Commits format, type list, message style (imperative, present tense, <72 char subject), and the Git Safety Protocol (never `--no-verify`, never force-push, never amend, never touch git config, fix and re-commit if a hook fails rather than bypassing it). Everything in that skill applies here — this agent adds one more constraint on top of it: **one commit per logical unit**, never a single commit spanning multiple units.
+Read `.agents/skills/git-commit/SKILL.md` before your first commit if you haven't internalized it: Conventional Commits format, type list, message style (imperative, present tense, <72 char subject), and the Git Safety Protocol (never `--no-verify`, never force-push, never amend, never touch git config, fix and re-commit if a hook fails rather than bypassing it). Everything in that skill applies here — this agent adds one more constraint on top of it: **always one single commit for everything pending**, never split by concern. A long history of many small commits is more costly to this repo than a commit that spans multiple files/areas — don't manufacture splits.
 
 ## Step 0 — confirm the issue reference
 
@@ -17,10 +24,10 @@ This repository's `.github/workflows/wakatime-sync.yml` watches commit messages 
 
 - If the user's request already named the issue (e.g. "commit isso para a issue #3"), use that — don't ask again.
 - Otherwise, ask directly with `AskUserQuestion`: which issue this work belongs to, making clear "nenhuma" / "none" is a valid answer, not just a way to skip the question.
-- If a real issue number comes back, append `(#N)` to the subject line of **every** commit you create this run, consistent with this repo's existing commit style.
-- If the answer is "none", proceed without any `#N` reference in any commit this run — that's an intentional, complete answer, not something to re-ask about per bucket.
+- If a real issue number comes back, append `(#N)` to the commit's subject line.
+- If the answer is "none", proceed without any `#N` reference — that's an intentional, complete answer.
 
-If the user's request states or implies that this commit finishes every remaining task of that issue (e.g. "conclui a issue #N", "fecha a issue", "essa é a última tarefa"), add a `Closes #N` footer line to the body of the **last** commit created this run — this is what makes GitHub auto-close the issue on push to the default branch. Don't add it if the issue still has open tasks, and don't ask the user to confirm completion if they already stated it — take their word for it.
+If the user's request states or implies that this commit finishes every remaining task of that issue (e.g. "conclui a issue #N", "fecha a issue", "essa é a última tarefa"), add a `Closes #N` footer line to the commit body — this is what makes GitHub auto-close the issue on push to the default branch. Don't add it if the issue still has open tasks, and don't ask the user to confirm completion if they already stated it — take their word for it.
 
 ## Step 1 — see what's pending
 
@@ -32,34 +39,23 @@ git diff --staged
 
 Note anything untracked. Never stage or commit anything that looks like a secret (`.env`, credentials, private keys, tokens) — if you find one pending, leave it unstaged and flag it instead of committing it.
 
-## Step 2 — classify every changed/untracked path into exactly one bucket
+## Step 2 — pick the one type that carries the change
 
-**Documentation** — `*.md` / `*.mdx` files, `LICENSE*`, anything under a top-level `docs/` directory.
+Look at the full diff across everything pending (not per-file) and pick a single Conventional Commit `type` for the whole commit, by strength:
 
-**Infrastructure** — repository-root config and tooling: package manifest/lockfile, `tsconfig*.json`, framework config (`next.config.*`, `postcss.config.*`, `eslint.config.*`), formatter/hook config (`.prettierrc*`, `.prettierignore`, `.lintstagedrc*`, `.husky/**`), `proxy.ts` (edge-level routing infrastructure), CI workflow files, `.gitignore`, editor/agent tooling (`.claude/**`, `.agents/**`, `.mcp.json`). Anything whose sole purpose is build/lint/format/deploy/tooling configuration rather than product behavior.
+1. **`feat`** — if any part of the change ships new user-facing or externally-usable capability, the commit is a `feat`, even if it's 90% refactor/fixes around that one new thing.
+2. **`fix`** — else, if any part of the change corrects broken/incorrect behavior, the commit is a `fix`.
+3. **`refactor`** — else, if the change restructures existing code without changing behavior, the commit is a `refactor`.
+4. **Anything else** — only once none of the above apply: `docs` (change touches only documentation), `build`/`ci`/`chore` (only tooling/config), `style` (only formatting), `test` (only tests), `perf` (pure performance work with no behavior change). Pick whichever single type actually describes the whole change.
 
-**Module(s)** — everything else: application/product code. Don't lump all of it into one bucket — group it by the nearest directory that represents a distinct feature/domain, and treat each distinct module as its own bucket:
+This is a deliberate priority order, not a vote — one `feat`-worthy line anywhere in the diff makes the whole commit a `feat`, because that's the strongest signal for both a human reading the log and `semantic-release`'s version bump. Pick a `scope` only if one name genuinely covers everything touched; leave it off rather than forcing a scope that doesn't fit a change spanning multiple areas.
 
-- Under the app's locale-segment route tree, the first path segment *after* the locale segment names the module (e.g. a route group/feature folder). Changes touching only the locale segment's own root files (root layout, root page, shared/root-level dictionary entries) belong to a `core` module, not a feature module.
-- Under `lib/`, the first subdirectory names the module; loose files directly in `lib/` belong to a `shared` module.
-- Apply the same "first meaningful subdirectory names the module" logic to any other top-level source directory present in the repo — infer module boundaries from whatever shape actually exists, don't assume a fixed list.
-- If two touched areas are genuinely unrelated features, keep them as separate module buckets even if that means more commits. "One commit per module" means literally that.
+## Step 3 — commit everything as one
 
-When unsure which bucket a path belongs to, prefer reading `ARCHITECTURE.md`'s directory-structure section for the top-level shape, then use judgment for anything below it.
-
-## Step 3 — commit each non-empty bucket separately
-
-Order: infrastructure first, then each module bucket, then documentation last (tooling should land before the code that relies on it; docs describing a change land after the change itself). Adjust the order only if there's a clear dependency reason to.
-
-For each bucket:
-
-1. `git add` only that bucket's files — nothing from another bucket.
-2. Look at the actual staged diff for this bucket to pick the Conventional Commit `type` (`feat`/`fix`/`refactor`/`perf`/`test`/etc. for module code; `build`/`ci`/`chore` for infrastructure; `docs` for documentation) and a `scope` matching the module/bucket name.
-3. Write the commit message following the skill's format and best practices — imperative, present tense, under 72 characters for the subject, body only if it adds real context. Include the `(#N)` issue reference from Step 0 if one was given.
-4. Commit. If a pre-commit hook fails, fix the underlying issue, re-stage, and create a **new** commit — never `--no-verify` and never amend.
+1. `git add` everything pending (respect the secret-scanning rule from Step 1 — leave any suspected secret file unstaged and flagged).
+2. Write the commit message following the skill's format and best practices — imperative, present tense, under 72 characters for the subject, body only if it adds real context beyond the diff itself. Include the `(#N)` issue reference and/or `Closes #N` footer from Step 0 if applicable.
+3. Commit. If a pre-commit hook fails, fix the underlying issue, re-stage, and create a **new** commit — never `--no-verify` and never amend.
 
 ## Step 4 — report
 
-After all commits are made, show the resulting `git log` entries (hash + subject) you just created, grouped by bucket, so the user can see the split at a glance.
-
-If everything pending genuinely belongs to a single logical unit (e.g. a one-line fix in one file), a single commit is correct — don't manufacture artificial splits where no real boundary exists.
+Show the resulting `git log` entry (hash + subject) you just created.

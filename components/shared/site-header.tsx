@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { getSectionHref } from "@/lib/nav-links";
 import type { Locale } from "@/lib/i18n-config";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,7 +30,6 @@ interface SiteHeaderNavLabels {
   projects: string;
   about: string;
   skills: string;
-  blog: string;
   contact: string;
   menu: string;
   menuTitle: string;
@@ -114,12 +114,11 @@ export function SiteHeader({
   }, [isHome]);
 
   const links = [
-    { href: `/${lang}`, label: nav.home },
-    { href: `/${lang}#about`, label: nav.about },
-    { href: `/${lang}#skills`, label: nav.skills },
-    { href: `/${lang}#projects`, label: nav.projects },
-    { href: `/${lang}/blog`, label: nav.blog },
-    { href: `/${lang}#contact`, label: nav.contact },
+    { href: getSectionHref(lang, "home"), label: nav.home },
+    { href: getSectionHref(lang, "about"), label: nav.about },
+    { href: getSectionHref(lang, "skills"), label: nav.skills },
+    { href: getSectionHref(lang, "projects"), label: nav.projects },
+    { href: getSectionHref(lang, "contact"), label: nav.contact },
   ];
 
   const isActive = (href: string) => {

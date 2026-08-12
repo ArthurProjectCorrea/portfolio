@@ -84,11 +84,7 @@ export function AboutSection({
                 {paragraph}
               </p>
             ))}
-            <Button
-              variant="outline"
-              nativeButton={false}
-              render={<a href="/cv-arthur-correa.pdf" download />}
-            >
+            <Button variant="outline" disabled>
               <Download aria-hidden />
               {about.cvLabel}
             </Button>

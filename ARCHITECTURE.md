@@ -2,7 +2,7 @@
 
 This document describes the technical architecture and conventions of this repository. It is intentionally agnostic to business rules, product features, and organizational context — it should read the same regardless of what the product does or who maintains it.
 
-This file is a living document. It is kept in sync with the codebase by the `architecture-doc-keeper` agent (see [`.claude/agents/architecture-doc-keeper.md`](.claude/agents/architecture-doc-keeper.md)) and should never describe anything the code doesn't actually do.
+This file is a living document. It is kept in sync with the codebase by the `architecture` agent (see [`.claude/agents/architecture.md`](.claude/agents/architecture.md)) and should never describe anything the code doesn't actually do.
 
 ## Stack
 
@@ -10,6 +10,7 @@ This file is a living document. It is kept in sync with the codebase by the `arc
 - **Language**: TypeScript
 - **UI**: React (Server Components by default; Client Components only where interactivity requires it)
 - **Component primitives**: shadcn/ui, generated via its CLI on top of Base UI, with Lucide as the icon set. Generated primitives are vendored into `components/ui/` and are not hand-edited — changes to them go through the shadcn CLI (add/diff), not manual patches. Because of that, `components/ui/**` and the CLI-generated `hooks/use-mobile.ts` are excluded from ESLint.
+- **Content**: optional long-form narrative content authored as Markdown/MDX (`@next/mdx`), rendered through the shared element overrides in `mdx-components.tsx`.
 - **Styling**: Tailwind CSS. Dark mode is class-based (`.dark` variable overrides in `app/globals.css`) and driven at runtime by `next-themes`, mounted once via a global provider.
 - **Linting / Formatting**: ESLint + Prettier, enforced on commit via Husky + lint-staged
 
@@ -42,6 +43,7 @@ Internationalization is a first-class architectural concern, not an afterthought
 - Dictionaries are loaded lazily, scoped to the resolved locale — a request for one locale must not pull another locale's translations into the response.
 - If a locale can't be resolved to a known dictionary, the route responds with "not found" rather than silently falling back to a different locale's content.
 - **Narrow exception**: a structured, per-entity data record defined under `data/` may hold its own localized text as a field typed `Record<Locale, string>` (or `Record<Locale, string[]>`) instead of a dictionary key. This is only for fields that belong to one specific entity instance and have no other source of truth — such as a catalog entity's own description — where the type system itself already guarantees every locale is present for that entry, so the drift a dictionary enforces against can't occur. It does not extend to freestanding UI copy (headings, labels, button/nav/empty-state text, and the like): anything not tied to a specific data entity still belongs in the dictionaries, with no exception.
+- **Related, optional case**: a `data/` entity's long-form narrative may instead live as a Markdown/MDX file per locale under `content/` (e.g. `content/{locale}/projects/{slug}.md`), loaded dynamically by locale and slug. Unlike the typed field above this isn't compiler-enforced, so the loading code must fall back to the entity's own data when a given locale's file doesn't exist yet.
 
 ## Naming Conventions
 
@@ -57,18 +59,19 @@ Internationalization is a first-class architectural concern, not an afterthought
 
 A generic layout — actual subfolders under each of these will grow with the product, but the top-level shape should hold:
 
-| Path                    | Purpose                                                                        |
-| ----------------------- | ------------------------------------------------------------------------------ |
-| `app/[locale-segment]/` | Routes, root layout, and per-locale dictionaries                               |
-| `components/ui/`        | shadcn/ui primitives — CLI-generated and vendored, never hand-edited           |
-| `components/shared/`    | Custom components reused across more than one module/page                      |
-| `components/global/`    | App-wide context providers (theming and the like), not visible UI on their own |
-| `components/private/`   | Components scoped to a single module/page, one subfolder per module            |
-| `hooks/`                | Custom React hooks, alongside any CLI-generated ones                           |
-| `lib/`                  | Shared, framework-agnostic configuration and utilities (e.g. the locale list)  |
-| `data/`                 | Structured, per-entity data records — see the locale-field exception above     |
-| `proxy.ts`              | Edge-level routing logic that runs before any route renders                    |
-| `public/`               | Static assets served as-is                                                     |
+| Path                    | Purpose                                                                                                   |
+| ----------------------- | --------------------------------------------------------------------------------------------------------- |
+| `app/[locale-segment]/` | Routes, root layout, and per-locale dictionaries                                                          |
+| `components/ui/`        | shadcn/ui primitives — CLI-generated and vendored, never hand-edited                                      |
+| `components/shared/`    | Custom components reused across more than one module/page                                                 |
+| `components/global/`    | App-wide context providers (theming and the like), not visible UI on their own                            |
+| `components/private/`   | Components scoped to a single module/page, one subfolder per module                                       |
+| `hooks/`                | Custom React hooks, alongside any CLI-generated ones                                                      |
+| `lib/`                  | Shared, framework-agnostic configuration and utilities (e.g. the locale list)                             |
+| `data/`                 | Structured, per-entity data records — see the locale-field exception above                                |
+| `content/`              | Optional per-locale Markdown/MDX narrative for a `data/` entity — see the related content exception above |
+| `proxy.ts`              | Edge-level routing logic that runs before any route renders                                               |
+| `public/`               | Static assets served as-is                                                                                |
 
 The `module-implementer` agent (see [`.claude/agents/module-implementer.md`](.claude/agents/module-implementer.md)) implements modules by investigating the existing code plus whatever prototype or functional explanation the user supplies directly in conversation, proposing a plan, and stopping for explicit approval before writing code.
 
@@ -77,7 +80,7 @@ Business- and domain-specific folders (features, services, data models, and so o
 ## Tooling & Enforcement
 
 - ESLint and Prettier define the code style; both run automatically on staged files via a Husky pre-commit hook (`lint-staged`).
-- Architecture compliance (naming language, i18n usage, i18n sync across locales) is reviewed by the `architecture-compliance-reviewer` agent (see [`.claude/agents/architecture-compliance-reviewer.md`](.claude/agents/architecture-compliance-reviewer.md)), not enforced by a lint rule — treat its findings the way you'd treat a human reviewer's.
+- Architecture compliance (naming language, i18n usage, i18n sync across locales) is reviewed by the `architecture` agent (see [`.claude/agents/architecture.md`](.claude/agents/architecture.md)), not enforced by a lint rule — treat its findings the way you'd treat a human reviewer's.
 
 ## Keeping This Document Honest
 

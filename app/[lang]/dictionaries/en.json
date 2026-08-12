@@ -5,12 +5,13 @@
     "projects": "Projects",
     "about": "About",
     "skills": "Skills",
-    "blog": "Blog",
     "contact": "Contact",
     "menu": "Open menu",
     "menuTitle": "Menu"
   },
   "home": {
+    "metaTitle": "Arthur Correa | Full Stack Developer",
+    "metaDescription": "Building scalable web products",
     "hero": {
       "eyebrow": "Full Stack Developer",
       "title": "Arthur Correa",
